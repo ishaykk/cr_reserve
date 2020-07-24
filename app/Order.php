@@ -8,14 +8,15 @@ class Order extends Model
 {
     protected $primaryKey = 'order_id';
     protected $guarded = [];
+    protected $dates = ['date', 'start_time', 'end_time'];
 
     public function user() 
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function room() 
     {
-        $this->hasOne(Room::class);
+        return $this->belongsTo(Room::class, 'room_id');
     }
 }

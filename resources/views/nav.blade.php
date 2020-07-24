@@ -7,8 +7,8 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <!-- Left Side Of Navbar -->
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Book a Room</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url('MyOrders.html')}}">My Orders</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url('/orders/create') }}">Book a Room</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url('/orders')}}">My Orders</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url('map.html')}}">Floors Map</a></li>
         </ul>
         <!-- Right Side Of Navbar -->

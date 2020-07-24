@@ -16,8 +16,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::all()->sortByDesc('date');
-        dd($orders);
+        //$orders = Order::all()->sortByDesc('date');
+        $orders = Order::where('user_id', Auth::id())->get()->sortByDesc('date');
+        return view('orders.index', compact('orders'));
     }
 
     /**
@@ -31,7 +32,7 @@ class OrderController extends Controller
         $user = Auth::user();
         $rooms = Room::all()->pluck('room_id');
         //dd($rooms);
-         return view('orders.create', compact('cap', 'user', 'rooms'));
+        return view('orders.create', compact('cap', 'user', 'rooms'));
     }
 
     /**

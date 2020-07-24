@@ -11,6 +11,6 @@ class Room extends Model
 
     public function orders() 
     {
-        $this->hasMany(Order::class);
+        return $this->hasMany(Order::class, 'order_id');
     }
 }
