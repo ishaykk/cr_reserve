@@ -37,10 +37,10 @@
                                 <td> {{ ($order->status == 1) ? 'Active' : (($order->status == 2) ? 'Canceled' : 'Completed') }}</td>
                                 <td>
                                     <div class="float-left">
-                                        <a class="btn btn-small btn-info" href="{{ route('rooms.edit', $order->room_id) }}">Edit</a>
+                                        <a class="btn btn-small btn-info" href="{{ route('orders.edit', $order->order_id) }}">Edit</a>
                                     </div>
                                     <div class="float-right">
-                                        <form action="{{ route('rooms.destroy', $order->room_id) }}" method="post">
+                                        <form action="{{ route('rooms.destroy', $order->order_id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-small btn-danger" type="submit">Delete</button>
