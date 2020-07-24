@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,9 +22,14 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/rooms', 'RoomController@index');
-Route::get('/rooms/create', 'RoomController@create');
-Route::post('/rooms', 'RoomController@store');
+// Route::get('/rooms', 'RoomController@index');
+// Route::get('/rooms/create', 'RoomController@create');
+// Route::post('/rooms', 'RoomController@store');
+// Route::get('/rooms/{room}/edit', 'RoomController@edit')->name('rooms.edit');
+// Route::patch('/rooms/{room}', 'RoomController@update')->name('rooms.update');
+// Route::delete('/rooms/{room}', 'RoomController@destroy')->name('rooms.destroy');
+Route::resource('rooms', 'RoomController');
+Route::resource('orders', 'OrderController');
 
 
 // Route::get('/test', function () {
