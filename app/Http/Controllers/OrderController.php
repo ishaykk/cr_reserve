@@ -6,6 +6,7 @@ use Auth;
 use App\Room;
 use App\Order;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
@@ -26,13 +27,27 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function search(Request $request)
     {
         $cap = [4, 6, 8, 10, 12, 14];
-        $user = Auth::user();
-        $rooms = Room::all()->pluck('room_id');
+        $date = Carbon::now('Israel');
+        return view('orders.search', compact('cap', 'date'));
+        //return view('orders.search'/*, compact('rooms')*/);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
+    {
+        //dd($request);
+        $search = $request->get('room_id');
+        $rooms = Room::where('room_id', '=', $search)->get();
         //dd($rooms);
-        return view('orders.create', compact('cap', 'user', 'rooms'));
+        
+        return view('orders.create', compact('rooms'));
     }
 
     /**
@@ -43,7 +58,24 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = request()->validate([
+            //'capacity' => 'required',
+            'room' => 'required',
+            //'date'=> 'required|date_format:d/m/Y',
+            'sTime' => 'required|date_format:H:i',
+            'eTime' => 'required|date_format:H:i',
+        ]);
+        if($request->has('projector'))
+            $data['projector'] = 1;
+        else
+            $data['projector'] = 0;
+        $data['user_id'] = Auth::id();
+        //$data['date'] = \Carbon\Carbon::now('ISRAEL')->format('H:i');
+
+        dd($data);
+        Order::create($data);
+
+        return redirect('orders')->with('success', 'Order created successfully!');
     }
 
     /**

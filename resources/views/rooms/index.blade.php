@@ -1,7 +1,7 @@
 @extends('layout')
 @section('title', 'Rooms')
 @section('content')
-<div class='col-12 mt-3'>
+<div class='col-12'>
   @if(session()->get('success'))
   <div class="alert alert-success">{{ session()->get('success') }}</div>
 @endif

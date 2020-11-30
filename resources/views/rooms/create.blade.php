@@ -2,7 +2,7 @@
 @section('title', 'Add a new Room')
 @section('content')
 <div class="row">
-    <div class='col-12 mt-3'>
+    <div class='col-12'>
         <div class="card">
             <div class="card-header"><strong>Add a new Room</strong></div>
             <div class="card-body">

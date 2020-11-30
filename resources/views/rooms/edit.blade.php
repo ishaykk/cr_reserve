@@ -2,7 +2,7 @@
 @section('title', 'Edit Room')
 @section('content')
 <div class="row">
-    <div class='col-12 mt-3'>
+    <div class='col-12'>
         <div class="card">
             <div class="card-header"><strong>Edit Room {{ $room->room_id }}</strong></div>
             <div class="card-body">
