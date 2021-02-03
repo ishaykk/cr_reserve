@@ -1,7 +1,7 @@
 @extends('layout')
 @section('title', 'Rooms')
 @section('content')
-<div class='col-12 mt-3'>
+<div class='col-12'>
   @if(session()->get('success'))
   <div class="alert alert-success">{{ session()->get('success') }}</div>
 @endif
@@ -12,7 +12,7 @@
         <div class="card-body">
           <table class="table">
             <thead>
-              <tr>
+              <tr class="text-center">
                 <th scope="col">Room id</th>
                 <th scope="col">Floor</th>
                 <th scope="col">Capacity</th>
@@ -24,20 +24,22 @@
             </thead>
             <tbody>
               @foreach($rooms as $room)
-                <tr>
-                  <th scope="row">{{ $room->room_id}}</th>
+                <tr class="text-center">
+                  <td>{{ $room->room_id}}</td>
                   <td>{{ $room->floor }}</td>
                   <td>{{ $room->capacity }}</td>
                   <td>{{ $room->projector }}</td>
                   <td>{{ $room->occupied }}</td>
                   <td>{{ $room->available }}</td>
                   <td>
-                    <a class="btn btn-small btn-info" href="{{ route('rooms.edit', $room->room_id) }}">Edit</a>
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                    <a class="btn btn-sm btn-info" href="{{ route('rooms.edit', $room->room_id) }}">Edit</a>
                     <form action="{{ route('rooms.destroy', $room->room_id) }}" method="post">
                       @csrf
                       @method('DELETE')
-                      <button class="btn btn-small btn-danger" type="submit">Delete</button>
+                      <button class="btn btn-sm btn-danger" type="submit">Delete</button>
                     </form>
+                  </div>
                 </td>
                 </tr>
               @endforeach

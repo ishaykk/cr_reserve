@@ -20,16 +20,28 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
 
-// Route::get('/rooms', 'RoomController@index');
-// Route::get('/rooms/create', 'RoomController@create');
-// Route::post('/rooms', 'RoomController@store');
+
+Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function() {
+    Route::resource('/users','UsersController', ['except' => ['show', 'create','store',]]);
+});
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('map', function () {
+    return view('map');
+});
+Route::get('/orders', 'OrderController@index');
+Route::get('/orders/search', 'OrderController@search');
+Route::post('/orders/create', 'OrderController@create');
+Route::post('/orders', 'OrderController@store');
+Route::get('/orders/{order}/edit', 'OrderController@edit')->name('orders.edit');
+
 // Route::get('/rooms/{room}/edit', 'RoomController@edit')->name('rooms.edit');
 // Route::patch('/rooms/{room}', 'RoomController@update')->name('rooms.update');
-// Route::delete('/rooms/{room}', 'RoomController@destroy')->name('rooms.destroy');
+Route::delete('/orders/{order}', 'OrderController@destroy')->name('orders.destroy');
 Route::resource('rooms', 'RoomController');
-Route::resource('orders', 'OrderController');
+//Route::resource('orders', 'OrderController');
+
+
 
 
 // Route::get('/test', function () {

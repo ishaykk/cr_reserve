@@ -1,47 +1,55 @@
 @extends('layout')
 @section('title', 'Book a room')
 @section('content')
+<div class='col-12'>
+  @if(session()->get('success'))
+  <div class="alert alert-success">{{ session()->get('success') }}</div>
+@endif
 <div class="row">
-    <div class='col-12 mt-3'>
-        <div class="card">
-            <div class="card-header"><strong>Book a room</strong></div>
-            <div class="card-body">
-                <form action="/orders" method="POST">
-                    <div class="form-group">
-                        <label for="capacity"><strong>Select minimum capacity: </strong></label>
-                        <select class="ml-2" name="capacity" id="capacity">
-                            @foreach ($cap as $c)
-                                <option value="{{ $c }}">{{ $c }}</option>
-                            @endforeach
-                        </select>
-                    </div> 
-                    
-                    <div class="form-group">
-                        <label for="floor"><strong>Select a room: </strong></label>
-                        <select class="ml-2" name="floor" id="floor">
-                            @foreach ($rooms as $room)
-                                <option value="{{ $room }}">{{ $room }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                            
-
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" name="projector" class="custom-control-input" id="customSwitch1">
-                        <label class="custom-control-label" for="customSwitch1">Projector</label>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary mt-2">Show available rooms</button>     
-                    @csrf
-                </form>
-            </div>
+  <div class='col-12 mt-3'>
+      <div class="card">
+        <div class="card-header"><strong>Available rooms at {{ $dataArray['date_il'] }} between {{ $dataArray['sTime'] }} - {{ $dataArray['eTime'] }}    </strong></div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Room id</th>
+                <th scope="col">Floor</th>
+                <th scope="col">Capacity</th>
+                <th scope="col">Projector</th>
+                <th scope="col">Occupied</th>
+                <th scope="col">Available</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach($rooms as $room)
+                <tr>
+                  <th scope="row">{{ $room->room_id}}</th>
+                  <td>{{ $room->floor }}</td>
+                  <td>{{ $room->capacity }}</td>
+                  <td>{{ $room->projector ? 'Yes' : 'No' }}</td>
+                  <td>{{ $room->occupied ? 'Yes' : 'No' }}</td>
+                  <td>{{ $room->available ? 'Yes' : 'No' }}</td>
+                  <td>
+                    <form action="/orders" method="post">
+                    <input type="hidden" name="start_time" value="{{ $dataArray['sTime'] }}">
+                    <input type="hidden" name="end_time" value="{{ $dataArray['eTime'] }}">
+                    <input type="hidden" name="date" value="{{ $dataArray['date'] }}">
+                    <input type="hidden" name="room_id" value="{{ $room->room_id }}">
+                      @csrf
+                      <button class="btn btn-small btn-primary " type="submit">Order</button>
+                    </form>
+                </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+          </div>
         </div>
-    </div>
-</div>
+      </div>
+  </div>
+@endsection
 
-<script>
-    $('#datetimepicker').datetimepicker({
-    format: 'yyyy-mm-dd'
-});
-</script>
+@section('javascripts')
 @endsection
