@@ -6,14 +6,13 @@
   <div class="alert alert-success">{{ session()->get('success') }}</div>
 @endif
 <div class="row">
-    <div class='col-md-12'>
         <div class="card">
             <div class="card-header"><strong>Users List</strong></div>
             <div class="card-body">
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>User id</th>
+                        <th>id</th>
                         <th>Name</th>
                         <th>email</th>
                         <th>Created at</th>
@@ -47,6 +46,6 @@
                 </table>
             </div>
         </div>
-    </div>
+    
 </div>
 @endsection

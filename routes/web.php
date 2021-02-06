@@ -20,7 +20,9 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-
+Route::get('/user/{id}', 'UserController@show')->name('user.show');
+Route::get('/user/edit', 'UserController@edit')->name('user.edit');
+Route::post('/user/edit', 'UserController@update')->name('user.update');
 
 Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function() {
     Route::resource('/users','UsersController', ['except' => ['show', 'create','store',]]);
