@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
+
+
 Auth::routes();
 
 Route::get('/user/{id}', 'UserController@show')->name('user.show');
@@ -28,6 +30,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function() {
     Route::resource('/users','UsersController', ['except' => ['show', 'create','store',]]);
 });
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/reset', 'HomeController@reset')->name('reset');
+
 Route::get('map', function () {
     return view('map');
 });

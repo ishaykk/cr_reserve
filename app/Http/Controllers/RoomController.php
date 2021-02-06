@@ -78,9 +78,9 @@ class RoomController extends Controller
         //dd($request->all());
         $validatedData = $request->validate([
             'room_id' => [
-            'required',
-            'gt:0',
-            Rule::unique('rooms')->ignore($room),
+                'required',
+                'gt:0',
+                Rule::unique('rooms')->ignore($room),
             ],
             'floor' => ['required', 'numeric', 'gt:-1',],
             'capacity' => ['required', 'numeric', 'gt:0',]

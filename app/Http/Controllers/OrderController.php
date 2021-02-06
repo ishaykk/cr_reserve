@@ -20,7 +20,7 @@ class OrderController extends Controller
     public function index()
     {
         //$orders = Order::all()->sortByDesc('date');
-        $orders = Order::where('user_id', Auth::id())->get()->sortByDesc('date');
+        $orders = Order::where('user_id', Auth::id())->get()->sortBy('date');
         return view('orders.index', compact('orders'));
     }
 
@@ -190,6 +190,6 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         $order->delete();
-        return redirect('orders')->with('success', 'Order deleted successfully!');
+        return redirect()->back()->with('success', 'Order deleted successfully!');
     }
 }

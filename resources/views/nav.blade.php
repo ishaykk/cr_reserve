@@ -29,6 +29,8 @@
         </ul>
         <!-- Right Side Of Navbar -->
         <ul class="navbar-nav ml-auto">
+        <a class="btn btn-primary" href="{{ url('/reset') }}">Reset App database</a>
+
           <!-- Authentication Links -->
           @guest
             <li class="nav-item">
@@ -46,9 +48,11 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                  @if (Auth::user()->hasRole('admin'))
                   <a class="dropdown-item" href="{{ route('admin.users.index') }}">
                         Users Management
                   </a>
+                  @endif
                   <a class="dropdown-item" href="{{ route('user.show', Auth::user()->id) }}">
                         Profile
                   </a>

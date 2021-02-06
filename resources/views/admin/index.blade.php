@@ -1,11 +1,14 @@
 @extends('layout')
 @section('title', 'Users list')
 @section('content')
-<div class='col-12'>
-  @if(session()->get('success'))
-  <div class="alert alert-success">{{ session()->get('success') }}</div>
-@endif
 <div class="row">
+<div class='col-12'>
+    @if(session()->get('success'))
+        <div class="alert alert-success">{{ session()->get('success') }}</div>
+    @endif  
+    @if(session()->get('error'))
+            <div class="alert alert-danger">{{ session()->get('error') }}</div>
+    @endif
         <div class="card">
             <div class="card-header"><strong>Users List</strong></div>
             <div class="card-body">
@@ -15,9 +18,10 @@
                         <th>id</th>
                         <th>Name</th>
                         <th>email</th>
+                        <th>Role</th>
                         <th>Created at</th>
                         <th>Updated at</th>
-                        <th></th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -26,6 +30,7 @@
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
+                                <td>{{ implode(', ', $user->roles()->get()->pluck('name')->toArray()) }}</td>
                                 <td>{{ $user->created_at }}</td>
                                 <td>{{ $user->updated_at }}</td>
                                 <td>
