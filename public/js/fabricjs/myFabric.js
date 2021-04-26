@@ -1,8 +1,13 @@
 var colorButton = document.getElementById("fill");
-        var colorDiv = document.getElementById("color_val");
+var colorDiv = document.getElementById("color_val");
+// save empty canvas state when page loades for undo/redo
+$(document).ready(function() {
+    updateHistory();
+});
         // when changing color without selection an object update colorDiv
         colorButton.onchange = function () {
             colorDiv.innerHTML = colorButton.value;
+            updateHistory(); // when color changes save state for undo/redo
         }
 
         var canvas = this.__canvas = new fabric.Canvas('canvas');
@@ -117,7 +122,7 @@ var colorButton = document.getElementById("fill");
             updateHistory();
         });
 
-        var UndoNew = () => {
+        const UndoNew = () => {
             if (canvasHistory.currentStateIndex - 1 === -1) {
                 console.log('nothing in the past');
                 return;
@@ -138,7 +143,7 @@ var colorButton = document.getElementById("fill");
             updateButtonsState();
         };
 
-        var RedoNew = () => {
+        const RedoNew = () => {
             if (canvasHistory.currentStateIndex + 1 === canvasHistory.state.length) {
                 console.log('nothing in the future');
                 return;
@@ -159,7 +164,7 @@ var colorButton = document.getElementById("fill");
         };
 
         function updateButtonsState() {
-            undoButton.disabled = (canvasHistory.currentStateIndex >= 0) ? false : true;
+            undoButton.disabled = (canvasHistory.currentStateIndex > 0) ? false : true;
             redoButton.disabled = (canvasHistory.state.length - canvasHistory.currentStateIndex >= 2 && canvasHistory.currentStateIndex > -1) ? false : true;
         }
 
