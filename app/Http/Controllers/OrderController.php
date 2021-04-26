@@ -7,6 +7,7 @@ use App\Room;
 use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use \DateTime;
 
@@ -19,8 +20,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //$orders = Order::all()->sortByDesc('date');
-        $orders = Order::where('user_id', Auth::id())->get()->sortBy('date');
+        $orders = Order::all()->sortByDesc('date');
+        //$orders = Order::where('user_id', Auth::id())->get()->sortBy('date');
         return view('orders.index', compact('orders'));
     }
 
@@ -65,7 +66,6 @@ class OrderController extends Controller
         //dd($request);
         $cap = intval($request->capacity);
         $request->capacity = $cap;
-        //dd($request->capacity, $cap);
         $data = request()->validate([
             'capacity' => 'required|integer',
             'date' => 'required|date',
@@ -75,49 +75,22 @@ class OrderController extends Controller
         //dd($data);
 
         $proj = $request->has('proj') ? 1 : 0;
-        $date = $request['date'];
+        $date = $data['date'];
         $dataArray['sTime'] = $data['start_time'];
         $dataArray['eTime'] = $data['end_time'];
-        $sDateTime = $date. ' '. $data['start_time'];
-        $eDateTime = $date. ' '. $data['end_time'];
+        $sDateTime = $data['start_time'];
+        $eDateTime = $data['end_time'];
+        
         $dataArray['date'] = $date;
         $dataArray['date_il'] = Carbon::createFromFormat('Y-m-d', $date)->format('d/m/Y');
-        
-        //dd($dataArray);
-        $rooms = Room::where('capacity', '>=', $cap)->where('projector', '>=', $proj)->whereNotIn('room_id', function($query) use ($eDateTime, $sDateTime) {
-            $query->select('room_id')->from('orders')->whereRaw('(TIMEDIFF(start_time, ?) < 0 AND TIMEDIFF(end_time, ?) > 0)')->setBindings([$eDateTime, $sDateTime])->get();
+        //dd($sDateTime, $eDateTime);
+        $rooms = Room::where('capacity', '>=', $cap)->where('projector', '>=', $proj)->whereNotIn('room_id', function($query) use ($date, $eDateTime, $sDateTime) {
+            $query->setBindings([$date, $eDateTime, $sDateTime])->select('room_id')->from('orders')->whereRaw('date = ?')->whereRaw('(TIMEDIFF(start_time, ?) < 0 AND TIMEDIFF(end_time, ?) > 0)');
         })->get();
+        
         if ($rooms->isEmpty())
-            return redirect('orders/search')->with([compact('rooms', 'cap', 'dataArray'), 'errors' => 'Sorry, no rooms available at this time slot, please try a different time']);
-        return view('orders.create', compact('rooms', 'cap', 'dataArray'));
-        //dd($rooms);
-        //$user = Auth::user();
-        //$rooms = Room::all()->pluck('room_id');
-        //$date = Carbon::now('Israel');
-
-        $sTime = $request->get('sTime');
-        $eTime = $request->get('eTime');
-        $carbonSTime = Carbon::parse($request->get('sTime'));
-        $carbonETime = Carbon::parse($request->get('eTime'));
-        //if($carbonSTime->gte($carbonETime))
-        $data = request()->validate([
-            'date' => 'required|date',
-            'sTime' => 'required',
-            'eTime' => 'required|after:sTime'
-        ]);
-        //$diff = $carbonETime->diffInMinutes($carbonSTime);
-        // dd($sTime, $eTime, $diff);
-        //$start_date = DateTime::createFromFormat('H:i:s', $request->get('sTime'));
-        //$since_start = $start_date->diff(DateTime::createFromFormat('H:i:s', $request->get('eTime')));
-        //dd((strtotime($eTime) - strtotime($sTime))/60);
-        // $date = $request->get('date');
-        // $room_id = $request->get('room');
-        // $res = Order::where(function ($query) {
-        //     $query->where('date', '=', '2020-11-26')
-        //         ->where('room_id', '=', 406);
-        // })->get();
-        // dd($res);
-        // return view('orders.create', compact('res'));
+            return redirect()->back()->with(['errors' => 'Sorry, no rooms available at this time slot, please try a different time']);
+        return view('orders.create', compact('rooms', 'cap', 'dataArray'));   
     }
 
 

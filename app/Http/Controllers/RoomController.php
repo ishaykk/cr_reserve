@@ -20,7 +20,6 @@ class RoomController extends Controller
     {
         $rooms = Room::all();
         return view('rooms.index', compact('rooms'));
-
     }
 
     /**

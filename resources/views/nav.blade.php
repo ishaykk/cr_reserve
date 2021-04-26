@@ -17,19 +17,25 @@
             <a class="dropdown-item" href="{{ url('/orders/search') }}">Create new order</a>
           </div>
       </li>
-      <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
-            Rooms
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="{{ url('/rooms') }}">View rooms</a>
-            <a class="dropdown-item" href="{{ url('/rooms/create') }}">Create new room</a>
-          </div>
-      </li>
+         
         </ul>
         <!-- Right Side Of Navbar -->
         <ul class="navbar-nav ml-auto">
-        <a class="btn btn-primary" href="{{ url('/reset') }}">Reset App database</a>
+        @if (Auth::user()->hasRole('admin'))
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle btn btn-sm btn-success text-white" href="#" data-toggle="dropdown">Admin Actions</a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">User Management</a></li>
+          <li><a class="dropdown-item" href="{{ route('orders.index') }}">Orders</a></li>
+	        <li><a class="dropdown-item" href="{{ route('rooms.index') }}">Rooms »</a>
+		        <ul class="submenu dropdown-menu">
+		          <li><a class="dropdown-item" href="{{ route('rooms.index') }}">View Rooms</a></li>
+		          <li><a class="dropdown-item" href="{{ route('rooms.create') }}">Create new room</a></li>
+            </ul>
+        </ul>
+      </li>
+      @endif
+        <li><a class="btn btn-primary ml-3" href="{{ url('/reset') }}">Reset App database</a></li>
 
           <!-- Authentication Links -->
           @guest
@@ -48,11 +54,6 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                  @if (Auth::user()->hasRole('admin'))
-                  <a class="dropdown-item" href="{{ route('admin.users.index') }}">
-                        Users Management
-                  </a>
-                  @endif
                   <a class="dropdown-item" href="{{ route('user.show', Auth::user()->id) }}">
                         Profile
                   </a>
@@ -72,3 +73,24 @@
       </div>
     </div>
 </nav>
+
+@section('javascripts')
+<script>
+// Prevent closing from click inside dropdown
+$(document).on('click', '.dropdown-menu', function (e) {
+  e.stopPropagation();
+});
+
+// make it as accordion for smaller screens
+if ($(window).width() < 992) {
+  $('.dropdown-menu a').click(function(e){
+    e.preventDefault();
+      if($(this).next('.submenu').length){
+        $(this).next('.submenu').toggle();
+      }
+      $('.dropdown').on('hide.bs.dropdown', function () {
+     $(this).find('.submenu').hide();
+  })
+  });
+}
+</script>

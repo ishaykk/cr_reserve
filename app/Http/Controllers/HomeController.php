@@ -39,7 +39,10 @@ class HomeController extends Controller
 
     public function reset() 
     {
-        Artisan::call('migrate:fresh', ['--seed' => true]);
+        //define('STDIN',fopen("php://stdin","r"));
+        //Artisan::call('migrate:fresh', ['--seed' => true]);
+        //Artisan::call('migrate:fresh --force');
+        Artisan::call('db:seed --force');
         Auth::logout();
         return redirect('/');
     }

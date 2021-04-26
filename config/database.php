@@ -2,18 +2,11 @@
 
 use Illuminate\Support\Str;
 
-if ($url = env('CLEARDB_DATABASE_URL', false)) {
-    $parts = parse_url($url);
-    $host = $parts["host"];
-    $username = $parts["user"];
-    $password = $parts["pass"];
-    $database = substr($parts["path"], 1);
-} else {
-    $host = env('DB_HOST', 'localhost');
-    $username = env('DB_USERNAME', 'forge');
-    $password = env('DB_PASSWORD', '');
-    $database = env('DB_DATABASE', 'forge');
-}
+$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+$host = $url["host"] ?? null;
+$username = $url["user"] ?? null;
+$password = $url["pass"] ?? null;
+$database = substr($url["path"], 1);
 
 return [
 
@@ -81,12 +74,16 @@ return [
         // 'mysql' => [
         //     'driver' => 'mysql',
         //     'host' => $host,
+        //     'port' => env('DB_PORT', '3306'),
         //     'database' => $database,
         //     'username' => $username,
         //     'password' => $password,
-        //     'charset' => 'utf8',
-        //     'collation' => 'utf8_unicode_ci',
+        //     'unix_socket' => env('DB_SOCKET', ''),
+        //     'charset' => 'utf8mb4',
+        //     'collation' => 'utf8mb4_unicode_ci',
         //     'prefix' => '',
+        //     'strict' => true,
+        //     'engine' => null,
         // ],
 
         'pgsql' => [

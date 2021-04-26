@@ -42,6 +42,11 @@ class User extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
+    public function drawings() 
+    {
+        return $this->hasMany(FloorDrawing::class);
+    }
+
     public function roles()
     {
         return $this->belongsToMany('App\Role');
