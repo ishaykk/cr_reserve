@@ -7,7 +7,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <!-- Left Side Of Navbar -->
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item"><a class="nav-link" href="{{ url('map')}}">Floors Map</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url('/floors/map') }}">Floor Plans</a></li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
             Orders
@@ -21,7 +21,7 @@
         </ul>
         <!-- Right Side Of Navbar -->
         <ul class="navbar-nav ml-auto">
-        @if (Auth::user()->hasRole('admin'))
+        @if (Auth::check() && Auth::user()->hasRole('admin'))
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle btn btn-sm btn-success text-white" href="#" data-toggle="dropdown">Admin Actions</a>
         <ul class="dropdown-menu">
@@ -32,6 +32,19 @@
 		          <li><a class="dropdown-item" href="{{ route('rooms.index') }}">View Rooms</a></li>
 		          <li><a class="dropdown-item" href="{{ route('rooms.create') }}">Create new room</a></li>
             </ul>
+          </li>
+          <li><a class="dropdown-item" href="{{ route('rooms.index') }}">Floors »</a>
+		        <ul class="submenu dropdown-menu">
+		          <li><a class="dropdown-item" href="{{ route('floors.index') }}">View Floors</a></li>
+		          <li><a class="dropdown-item" href="{{ route('floors.create') }}">Create new floor</a></li>
+            </ul>
+          </li>
+          <li><a class="dropdown-item" href="{{ route('rooms.index') }}">Floor Plans »</a>
+		        <ul class="submenu dropdown-menu">
+		          <li><a class="dropdown-item" href="{{ route('floordrawings.index') }}">View Drawings</a></li>
+		          <li><a class="dropdown-item" href="{{ route('floordrawings.create') }}">Create new drawing</a></li>
+            </ul>
+          </li>
         </ul>
       </li>
       @endif
@@ -54,7 +67,7 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="{{ route('user.show', Auth::user()->id) }}">
+                  <a class="dropdown-item" href="{{ route('users.show', Auth::user()->id) }}">
                         Profile
                   </a>
                   <a class="dropdown-item" href="{{ route('logout') }}"

@@ -1,8 +1,8 @@
 @extends('layout')
 @section('title', 'Rooms')
 @section('content')
-<div class="row">
-  <div class='col-12 mt-3'>
+<div class="row m-5">
+  <div class='col-12'>
       <div class="card">
         <div class="card-header"><strong>User Details</strong></div>
         <div class="card-body">

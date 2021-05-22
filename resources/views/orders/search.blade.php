@@ -1,11 +1,11 @@
 @extends('layout')
 @section('title', 'Search available rooms')
 @section('content')
-<div class="row">
+<div class="row m-5">
     <div class='col-12'>
-    @if(session()->get('errors'))
-    <div class="text-danger mb-2">{{ session()->get('errors') }}</div>
-    @endif
+        @if(session()->get('errors'))
+        <div class="text-danger mb-2">{{ session()->get('errors') }}</div>
+        @endif
         <div class="card">
             <div class="card-header"><strong>Search for Available Rooms</strong></div>
             <div class="card-body">
@@ -49,7 +49,7 @@
 
                     <!-- <div class="form-group">
                         <input id="setTimeExample" type="text" class="time" />
-					    <button id="setTimeButton">Set current time</button>                    
+                        <button id="setTimeButton">Set current time</button>                    
                     </div> -->
 
                     <button type="submit" class="btn btn-primary mt-2">Show available rooms</button>    

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Room;
+use App\Floor;
 use Exception;
 
 class RoomController extends Controller
@@ -28,7 +29,8 @@ class RoomController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('rooms.create');
+        $floors = Floor::all();
+        return view('rooms.create', compact('floors'));
     }
 
     /**

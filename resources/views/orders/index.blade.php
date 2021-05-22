@@ -1,7 +1,7 @@
 @extends('layout')
 @section('title', 'My Orders')
 @section('content')
-<div class="row">
+<div class="row m-5">
     <div class='col-12'>
     @if(session()->get('success'))
         <div class="alert alert-success">{{ session()->get('success') }}</div>
@@ -29,7 +29,7 @@
                                 <td>{{ $order->date->format('d/m/Y') }}</td>
                                 <td>{{ $order->start_time->format('H:i') }}</td>
                                 <td>{{ $order->end_time->format('H:i') }}</td>
-                                <th>{{ $order->room_id }}</th>
+                                <td>{{ $order->room_id }}</td>
                                 <td>{{ $order->room->floor }}</td>
                                 <td>{{ $order->room->capacity }}</td>
                                 <td>{{ ($order->room->projector == 1) ? 'Yes' : 'No' }}</td>

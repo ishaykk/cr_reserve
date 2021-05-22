@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\FloorDrawing;
+use App\Room;
+use App\Floor;
+use Carbon\Carbon;
 
 class FloorDrawingController extends Controller
 {
@@ -14,8 +17,8 @@ class FloorDrawingController extends Controller
      */
     public function index() 
     {
-        $res = FloorDrawing::all();
-        return view('floordrawings.index', compact('res'));
+        $drawings = FloorDrawing::all();
+        return view('floordrawings.index', compact('drawings'));
     }
 
     /**
@@ -24,7 +27,10 @@ class FloorDrawingController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('floordrawings.create');
+        $floors = Floor::all();
+        //dd($floors);
+        $rooms = Room::all();
+        return view('floordrawings.create', compact('rooms', 'floors'));
     }
 
     /**
@@ -59,7 +65,6 @@ class FloorDrawingController extends Controller
         return response()->json(['url'=>url('/floordrawings')]);
         //return redirect('floordrawings')->with('success', 'Drawing added to database!');
     }
-
     /**
         * Display the specified resource.
         *
@@ -68,7 +73,10 @@ class FloorDrawingController extends Controller
         */
         public function show($id)
         {
-            //
+            $rooms = Room::pluck('occupied', 'room_id');
+            //dd($rooms);
+            $drawing = FloorDrawing::findOrFail($id);
+            return view('floordrawings.show', compact('drawing', 'rooms'));
         }
 
     /**
@@ -123,6 +131,19 @@ class FloorDrawingController extends Controller
         $drawing = FloorDrawing::find($id);
         $drawing->delete();
         
-        return redirect('floordrawings.index')->with('success', 'Drawing '. $id . ' deleted!');
+        return redirect('floordrawings')->with('success', 'Drawing '. $id . ' deleted!');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getDrawing(Request $request)
+    {
+        $drawing = FloorDrawing::findOrFail(json_decode($request['selectionIndex']));
+        //return response()->json($drawing->drawing_data);    
+        return response()->json($drawing->drawing_data);    
     }
 }

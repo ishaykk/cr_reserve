@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>@yield('title')</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     @yield('csrf')
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -15,13 +15,12 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.16/jquery.timepicker.js"></script>
-    <script src="{{ asset('js/fabricjs/fabric.js') }}"></script>
+    @yield('headjs')
+    <!-- <script src="https://cdn.bootcss.com/fabric.js/4.0.0-beta.5/fabric.js"></script> -->
   </head>
   <body>
     @include('nav')
-      <div class="container mt-4">
-        @yield('content')
-      </div>
-        @yield('javascripts')
+    @yield('content')
+    @yield('javascripts')
   </body>
 </html>

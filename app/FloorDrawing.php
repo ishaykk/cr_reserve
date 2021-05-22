@@ -12,4 +12,9 @@ class FloorDrawing extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function floor() 
+    {
+        return $this->belongsTo(Floor::class);
+    }
 }

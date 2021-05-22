@@ -1,4 +1,22 @@
-ul {
+html  {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden; 
+}
+
+body, canvas {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* .container {
+    margin: 1em !important;
+    padding: 0 !important;
+} */
+
+.canvasControls {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -9,7 +27,7 @@ ul {
     flex-wrap: wrap;
 }
 
-li {
+.canvasControls > li {
     margin: 0.05em;
     padding: 0.05em;
 }
@@ -37,3 +55,19 @@ li {
     border: 1px solid black;
     padding: 2px;
 }
+
+canvas {
+    border: 2px solid red;
+}
+
+/* canvas { 
+    height: 100vh; 
+    width: 100vw; 
+    display: block;
+  } */
+
+/* canvas {
+    background-color: blue; 
+    width: 100%;
+    height: auto;
+} */

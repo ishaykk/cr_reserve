@@ -11,7 +11,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         if ($user)
-            return view('user.show')->withUser($user);
+            return view('users.show')->withUser($user);
         else 
             return redirect()->back();
     }
@@ -22,7 +22,7 @@ class UserController extends Controller
         {
             $user = User::findOrFail($id);
             if ($user)
-                return view('user.show')->withUser($user);
+                return view('users.show')->withUser($user);
             else 
                 return redirect()->back();
         }
@@ -35,7 +35,7 @@ class UserController extends Controller
         {
             $user = User::findOrFail($id);
             if ($user)
-                return view('user.show')->withUser($user);
+                return view('users.show')->withUser($user);
             else 
                 return redirect()->back();
         }

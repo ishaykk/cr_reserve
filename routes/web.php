@@ -22,9 +22,9 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/user/{id}', 'UserController@show')->name('user.show');
-Route::get('/user/edit', 'UserController@edit')->name('user.edit');
-Route::post('/user/edit', 'UserController@update')->name('user.update');
+Route::get('/users/{id}', 'UserController@show')->name('users.show');
+Route::get('/users/edit', 'UserController@edit')->name('users.edit');
+Route::post('/users/edit', 'UserController@update')->name('users.update');
 
 Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function() {
     Route::resource('/users','UsersController', ['except' => ['show', 'create','store',]]);
@@ -33,11 +33,15 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function() {
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/reset', 'HomeController@reset')->name('reset');
 
-Route::get('map', function () {
-    return view('map');
-});
+// Route::get('map', function () {
+//     return view('map');
+// });
+Route::get('floors/map', 'FloorController@showMap')->name('floors.map');
+
 Route::resource('/rooms', 'RoomController');
-Route::resource('/floordrawings', 'FloorDrawingController', ['except' => ['show, store']]);
+Route::resource('/floors', 'FloorController');
+Route::post('floordrawings/getDrawing/', 'FloorDrawingController@getDrawing');
+Route::resource('/floordrawings', 'FloorDrawingController'/*, ['except' => ['show, store']]*/);
 Route::get('/orders', 'OrderController@index')->name('orders.index');
 Route::get('/orders/search', 'OrderController@search');
 Route::post('/orders/create', 'OrderController@create');
