@@ -20,7 +20,7 @@ body, canvas {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    border: 1px dotted red;
+    /* border: 1px dotted red; */
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -28,8 +28,8 @@ body, canvas {
 }
 
 .canvasControls > li {
-    margin: 0.05em;
-    padding: 0.05em;
+    margin: 0.1em;
+    padding: 0.06em;
 }
 
 

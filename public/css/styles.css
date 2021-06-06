@@ -18,6 +18,17 @@
 /* ============ desktop view .end// ============ */
 
 @media (min-width: 992px){
+	.navbar {
+		min-height: 15px;
+		padding: 5px !important;
+	  }
+	  
+	  .navbar-brand {
+		padding: 0;
+		height: 15px;
+		line-height: 15px;
+	  }
+
 	.dropdown-menu .dropdown-toggle:after{
 		border-top: .3em solid transparent;
 	    border-right: 0;

@@ -23,6 +23,15 @@ class RoomController extends Controller
         return view('rooms.index', compact('rooms'));
     }
 
+
+    public function show($id)
+    {
+        $room = Room::findOrFail($id);
+        if ($room)
+            return view('rooms.show', compact('room'));
+        else 
+            return redirect()->back();
+    }
     /**
      * Show the form for creating a new resource.
      *

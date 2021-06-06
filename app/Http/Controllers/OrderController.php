@@ -20,8 +20,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::all()->sortByDesc('date');
-        //$orders = Order::where('user_id', Auth::id())->get()->sortBy('date');
+        //$orders = Order::all()->sortByDesc('date');
+        $orders = Order::where('user_id', Auth::id())->get()->sortBy('date');
         return view('orders.index', compact('orders'));
     }
 
@@ -164,5 +164,16 @@ class OrderController extends Controller
     {
         $order->delete();
         return redirect()->back()->with('success', 'Order deleted successfully!');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getAllOrders()
+    {
+        $orders = Order::all()->sortByDesc('date');
+        return view('orders.all', compact('orders'));
     }
 }

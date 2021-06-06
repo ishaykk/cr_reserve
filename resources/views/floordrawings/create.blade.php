@@ -13,19 +13,24 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
 @endsection
 @section('content')
-<div class="container-fluid mt-4">
+<div class="container-fluid mt-2">
     <div class="row">
-        <div class="col-10">
+        <div class="col-12 col-md-12">
             <ul class="canvasControls">
                 <li class="colorContainer">
                     <input type="color" id="fill" value="#ffffff">
-                    <span class="colorContainer" id="color_val"></span>
+                    <span class="colorContainer" id="color_val">#FFFFFF</span>
                 </li>
-                <li><button onclick="ClearAll()" id="clearAll">Clear all</button></li>
-                <li><img onclick="AddRect()" class="shape" id="addRect" src="{{ asset('img/floordrawing/rect_icon_20x20.png') }}"></li>
-                <li><img onclick="AddCircle()" class="shape" id="addCircle" src="{{ asset('img/floordrawing/circle_icon_20x20.png') }}"></li>
+                <li><img onclick="addRect()" class="shape" id="addRect" src="{{ asset('img/floordrawing/rect_icon_20x20.png') }}"></li>
+                <li><img onclick="addCircle()" class="shape" id="addCircle" src="{{ asset('img/floordrawing/circle_icon_20x20.png') }}"></li>
+                <li><img onclick="addText()" class="shape" id="addText" src="{{ asset('img/floordrawing/text_icon_20x20.png') }}"></li>
+                <li><button onclick="toFront()" id="tofront">Bring to Front</button></li>
+                <li><button onclick="toBack()" id="toback">Send to Back</button></li>
+                <li><button onclick="clearAll()" id="clearAll">Clear all</button></li>
                 <li><button id="saveJSON">Save JSON</button></li>
-                <li><button onclick="LoadJSON()" id="loadJSON">Load JSON</button></li>
+                <!-- <li><input type="file" id="loadjson"></li> -->
+                <li><button onclick="$('#loadjson').click()">Load JSON</button></li>
+                <input type="file" id="loadjson" style="display:none">
                 <li><button onclick="undo()" id="undo" disabled>Undo</button></li>
                 <li><button onclick="redo()" id="redo" disabled>Redo</button></li>
                 <li><a href="#" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#saveJsonModal">Save JSON
@@ -93,19 +98,9 @@
                 </div>
             </ul>
             <canvas id="canvas"></canvas>
+            <div id="contextmenu-output"></div>
         </div>
-        <div id="contextmenu-output"></div>
-        <div class="col-2">
-            <ul class="list-group-sm" id="roomControl">
-                <h6 class="text-center">Room Indicator Tester</h6>
-                <li class="list-group-item" id="roomItem1">
-                    <div class="custom-control custom-control-right custom-switch">
-                        <input type="checkbox" class="custom-control-input indicator" id="customSwitch1">
-                        <label class="custom-control-label" for="customSwitch1">Room 880</label>
-                    </div>
-                </li>
-            </ul>
-        </div>
+        
     </div>
 </div>
 @endsection
@@ -113,21 +108,24 @@
 @section('javascripts')
 <script src="{{ asset('js/fabricjs/myFabric.js') }}"></script>
 <script>
+
+    window.addEventListener('resize', resizeCanvas, false);
+    function resizeCanvas() {
+        canvas.setHeight(window.innerHeight - 100);
+        //canvas.setWidth(window.innerWidth - 150);
+        canvas.setWidth($('.canvasControls').width());
+        canvas.renderAll();
+        console.log($('.canvasControls').width());
+        console.log($('#canvas').width());
+
+    }
+    resizeCanvas();
     let objX = 100;
     $('#createDrawForm').on('submit', function() {
         event.preventDefault();
         const formData = $("#createDrawForm").serializeArray();
         console.log(formData);
         const drawingJsonData = JSON.stringify(canvas.toJSON(['id', 'room_id']), null, 2);
-        // let data = {
-        //     "formData": {
-        //         form,
-        //         description,
-        //     },
-        //     "drawing_data": {
-        //         drawingJsonData,
-        //     },
-        // };
         $.ajaxSetup({
             beforeSend: function(xhr, type) {
                 if (!type.crossDomain) {
@@ -145,8 +143,6 @@
             // dataType: 'json', // payload is json
             // contentType: 'application/json',
             success: function(res) {
-                //window.location.href = res.url;
-                console.log(res);
                 $('#saveJsonModal').modal('hide');
             },
             error: function(res) {
@@ -174,14 +170,12 @@
             cornerStyle: 'circle',
             cornerSize: 4,
             hasControls: true,
-            //type: 'indicator',
         });
         objX += 45;
         const text = new fabric.IText(room_id, {
             fontSize: 20,
             fontFamily: 'Tahoma',
-            //originX: indicator.x, //'center',
-            //originY: indicator.y + 10,
+            stroke: '#000000',
             left: indicator.left,
             top: indicator.top + 35,
         });
@@ -203,10 +197,7 @@
             data: {
             },
             success: function (res) {
-                //$(".display").html(data);
-                //occupiedRoom = data;
                 occupiedRoom = JSON.parse(JSON.stringify(res));
-                //console.log(Object.values(data).includes(509));
                 changeState(occupiedRoom);
             },
             error: function(res) {
@@ -217,7 +208,6 @@
 
     function changeState(data) {
         console.log("data = ", data);
-        //console.log("typeof room_id = ", typeof(data[0]));
         canvas.getObjects().forEach(function(obj) {
             if(obj.room_id) {
                 if(Object.values(data).includes(Number(obj.room_id)))

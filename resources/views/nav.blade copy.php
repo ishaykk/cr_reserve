@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div class="container-fluid">
-      <a href="/"><img src="{{ asset('img/logo.svg') }}" alt=""></a>
+      <a class="navbar-brand" href="/"><img src="{{ asset('img/logo2.svg') }}" alt=""></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
           <span class="navbar-toggler-icon"></span>
       </button>
@@ -23,7 +23,7 @@
         <ul class="navbar-nav ml-auto">
         @if (Auth::check() && Auth::user()->hasRole('admin'))
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle text-success" href="#" data-toggle="dropdown">Admin Actions</a>
+        <a class="nav-link dropdown-toggle btn btn-sm btn-success text-white" href="#" data-toggle="dropdown">Admin Actions</a>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">User Management</a></li>
           <li><a class="dropdown-item" href="{{ route('orders.index') }}">Orders</a></li>
@@ -33,13 +33,13 @@
 		          <li><a class="dropdown-item" href="{{ route('rooms.create') }}">Create new room</a></li>
             </ul>
           </li>
-          <li><a class="dropdown-item" href="{{ route('floors.index') }}">Floors »</a>
+          <li><a class="dropdown-item" href="{{ route('rooms.index') }}">Floors »</a>
 		        <ul class="submenu dropdown-menu">
 		          <li><a class="dropdown-item" href="{{ route('floors.index') }}">View Floors</a></li>
 		          <li><a class="dropdown-item" href="{{ route('floors.create') }}">Create new floor</a></li>
             </ul>
           </li>
-          <li><a class="dropdown-item" href="{{ route('floordrawings.index') }}">Floor Plans »</a>
+          <li><a class="dropdown-item" href="{{ route('rooms.index') }}">Floor Plans »</a>
 		        <ul class="submenu dropdown-menu">
 		          <li><a class="dropdown-item" href="{{ route('floordrawings.index') }}">View Drawings</a></li>
 		          <li><a class="dropdown-item" href="{{ route('floordrawings.create') }}">Create new drawing</a></li>
@@ -48,7 +48,7 @@
         </ul>
       </li>
       @endif
-        <!-- <li><a class="btn ml-3" href="{{ url('/reset') }}">Reset App database</a></li> -->
+        <li><a class="btn btn-sm btn-primary ml-3" href="{{ url('/reset') }}">Reset App database</a></li>
 
           <!-- Authentication Links -->
           @guest

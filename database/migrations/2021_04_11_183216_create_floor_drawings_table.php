@@ -15,7 +15,7 @@ class CreateFloorDrawingsTable extends Migration
     {
         Schema::create('floor_drawings', function (Blueprint $table) {
             $table->id();
-            $table->integer('floor_id')->unique();
+            $table->integer('floor_id');
             $table->string('building');
             $table->string('description')->nullable();
             $table->longText('drawing_data');

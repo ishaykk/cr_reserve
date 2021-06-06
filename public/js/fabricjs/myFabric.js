@@ -1,19 +1,17 @@
 let contextMenuItems;
 let objectId = 0;
-const canvas = new fabric.Canvas('canvas');
+const canvas = new fabric.Canvas('canvas', {
+    preserveObjectStacking: true
+});
 //canvas.setWidth(window.innerWidth - 100);
 //canvas.setHeight(window.innerHeight - 100);
 fitToContainer(canvas);
 
 function fitToContainer(canvas){
-    //canvas.style.width='100%';
-    //canvas.style.height='100%';
-    //console.log(document.getElementById("canvas").parentElement);
-    canvas.setWidth(document.querySelector(".canvasControls").offsetWidth);
+    canvas.setWidth(window.innerWidth - 150);
     canvas.setHeight(window.innerHeight - 150);
 }
-// var rect1 = new fabric.Rect({ top: 50, left: 50, width: 70, height: 70, fill: 'red' });
-// canvas.add(rect1);
+
 const colorButton = document.getElementById("fill");
 const colorDiv = document.getElementById("color_val");
 
@@ -48,7 +46,6 @@ function onContextmenu(event) {
             continue;
         }
     }
-
     //Block the system right-click menu
     event.preventDefault();
     return false;
@@ -95,21 +92,6 @@ colorButton.onchange = function () {
 const undoButton = document.getElementById('undo');
 const redoButton = document.getElementById('redo');
 
-addRect.onclick = AddRect;
-addCircle.onclick = AddCircle;
-clearAll.onclick = ClearAll;
-//saveJSON.onclick = download(JSON.stringify(canvas.toJSON(['id'])),
-//    'json.txt', 'text/plain');
-//saveJSON.onclick = SaveJSON;
-loadJSON.onclick = LoadJSON;
-//undo.onclick = undo();
-//redo.onclick = redo();
-// function resizeCanvas() {
-//     canvas.setHeight(window.innerHeight - 100);
-//     canvas.setWidth(window.innerWidth - 100);
-//     canvas.renderAll();
-// }
-
 let cloneIcon = "data:image/svg+xml,%3C%3Fxml version='1.0' encoding='iso-8859-1'%3F%3E%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 55.699 55.699' width='100px' height='100px' xml:space='preserve'%3E%3Cpath style='fill:%23010002;' d='M51.51,18.001c-0.006-0.085-0.022-0.167-0.05-0.248c-0.012-0.034-0.02-0.067-0.035-0.1 c-0.049-0.106-0.109-0.206-0.194-0.291v-0.001l0,0c0,0-0.001-0.001-0.001-0.002L34.161,0.293c-0.086-0.087-0.188-0.148-0.295-0.197 c-0.027-0.013-0.057-0.02-0.086-0.03c-0.086-0.029-0.174-0.048-0.265-0.053C33.494,0.011,33.475,0,33.453,0H22.177 c-3.678,0-6.669,2.992-6.669,6.67v1.674h-4.663c-3.678,0-6.67,2.992-6.67,6.67V49.03c0,3.678,2.992,6.669,6.67,6.669h22.677 c3.677,0,6.669-2.991,6.669-6.669v-1.675h4.664c3.678,0,6.669-2.991,6.669-6.669V18.069C51.524,18.045,51.512,18.025,51.51,18.001z M34.454,3.414l13.655,13.655h-8.985c-2.575,0-4.67-2.095-4.67-4.67V3.414z M38.191,49.029c0,2.574-2.095,4.669-4.669,4.669H10.845 c-2.575,0-4.67-2.095-4.67-4.669V15.014c0-2.575,2.095-4.67,4.67-4.67h5.663h4.614v10.399c0,3.678,2.991,6.669,6.668,6.669h10.4 v18.942L38.191,49.029L38.191,49.029z M36.777,25.412h-8.986c-2.574,0-4.668-2.094-4.668-4.669v-8.985L36.777,25.412z M44.855,45.355h-4.664V26.412c0-0.023-0.012-0.044-0.014-0.067c-0.006-0.085-0.021-0.167-0.049-0.249 c-0.012-0.033-0.021-0.066-0.036-0.1c-0.048-0.105-0.109-0.205-0.194-0.29l0,0l0,0c0-0.001-0.001-0.002-0.001-0.002L22.829,8.637 c-0.087-0.086-0.188-0.147-0.295-0.196c-0.029-0.013-0.058-0.021-0.088-0.031c-0.086-0.03-0.172-0.048-0.263-0.053 c-0.021-0.002-0.04-0.013-0.062-0.013h-4.614V6.67c0-2.575,2.095-4.67,4.669-4.67h10.277v10.4c0,3.678,2.992,6.67,6.67,6.67h10.399 v21.616C49.524,43.26,47.429,45.355,44.855,45.355z'/%3E%3C/svg%3E%0A"
 
 let deleteImg = document.createElement('img');
@@ -121,38 +103,17 @@ fabric.Object.prototype.transparentCorners = false;
 fabric.Object.prototype.cornerColor = '#0000cc';
 fabric.Object.prototype.cornerStyle = 'circle';
 
-let json;
-
-function ClearAll() {
+function clearAll() {
     updateHistory();
     canvas.clear();
 }
 
-// function SaveJSON() {
-//     json = JSON.stringify(canvas.toJSON(['id', 'room_id']));
-//     console.log(json);
-// }
-
-// function download(fileName, contentType) {
-//     var a = document.createElement("a");
-//     var file = new Blob([content], { type: contentType });
-//     a.href = URL.createObjectURL(file);
-//     a.download = 'data.json';
-//     a.click();
-// }
-
 $("#saveJSON").click(function () {
     let dateNow = new Date().toLocaleString();//.split(' ');
-    //let date = now.replace(/\//g|/:/g, '-');
     let parsedDate = dateNow.replace(/[/:]/g, '-').split(',');
-    console.log(parsedDate[1].replace(/[ PM]/g, ''));
-    let timestamp = (parsedDate[0] + '-' + parsedDate[1].replace(/[ PM]/g, ''));
-    console.log(timestamp);
-    //let time = now[1].replace(/:/g, '-');
-    //console.log(date + '_' + time);
+    console.log(parsedDate[1].split(' '));
+    let timestamp = (parsedDate[0] + '-' + parsedDate[1].split(' ')[1]);
     const json = JSON.stringify(canvas.toJSON(['id', 'room_id']), null, 2);
-    console.log(json);
-    //$("#myTextArea").text(JSON.stringify(json));
     const a = document.createElement("a");
     const file = new Blob([json], {
         type: 'json' //'text/plain'
@@ -162,12 +123,18 @@ $("#saveJSON").click(function () {
     a.click();
 });
 
-function LoadJSON() {
-    if (json != '')
-        canvas.loadFromJSON(json);
-    else
-        console.log('no json saved!');
-}
+$('#loadjson').change(function(e) {
+    var file = e.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(f) {
+      var data = f.target.result;
+      canvas.loadFromJSON(
+      JSON.parse(data),
+      canvas.renderAll.bind(canvas));
+    };
+    reader.readAsText(file);
+});
 
 //------------ Undo/Redo New section -----------//
 var canvasHistory = {
@@ -282,7 +249,7 @@ function updateButtonsState() {
 }
 
 //------------ adding shapes section -----------//
-function AddRect() {
+function addRect() {
     const rect = new fabric.Rect({
         id: objectId++,
         left: 100,
@@ -296,6 +263,8 @@ function AddRect() {
         stroke: '#000000',
         strokeWidth: 4,
         cornerStyle: 'circle',
+        strokeUniform: true,
+        //evented: false,
     });
     // var text = new fabric.IText('404', {
     //     fontSize: 30,
@@ -316,7 +285,7 @@ function AddRect() {
     canvas.setActiveObject(rect);
 }
 
-function AddCircle() {
+function addCircle() {
     const circle = new fabric.Circle({
         id: objectId++,
         left: 100,
@@ -326,12 +295,66 @@ function AddCircle() {
         objectCaching: false,
         stroke: '#000000',
         strokeWidth: 4,
+        strokeUniform: true,
         cornerStyle: 'circle',
     });
 
     canvas.add(circle);
     canvas.setActiveObject(circle);
 };
+function addText() {
+    let text = new fabric.IText('Text', {
+        fontSize: 30,
+        top: 50,
+        left: 100,
+        originX: 'center',
+        originY: 'center'
+    });
+    canvas.add(text);
+    canvas.setActiveObject(text);
+}
+
+const toFront = () => {
+    canvas.getActiveObject().bringToFront();
+}
+
+const toBack = () => {
+    canvas.getActiveObject().sendToBack();
+}
+
+document.addEventListener('keydown', function(e) {
+    const activeObj = canvas.getActiveObject();
+    if(activeObj) {
+        switch(e.key) {
+            case 'ArrowRight': 
+                e.preventDefault();
+                activeObj.left += 2;
+                updateHistory();
+                break;
+            case 'ArrowLeft':
+                e.preventDefault();
+                activeObj.left -= 2;
+                updateHistory();
+                break;
+            case 'ArrowUp':
+                e.preventDefault();
+                activeObj.top -= 2;
+                updateHistory();
+                break;
+            case 'ArrowDown':
+                e.preventDefault();
+                activeObj.top += 2;
+                updateHistory();
+                break;
+            case 'Delete':
+                e.preventDefault();
+                deleteObject();
+                updateHistory();
+                break;
+        }
+        canvas.renderAll(); 
+    }
+});
 
 function renderIcon(icon) {
     return function renderIcon(ctx, left, top, styleOverride, fabricObject) {
@@ -380,7 +403,7 @@ function cloneObject(eventData, transform) {
     activeObject.clone(function (cloned) {
         canvas.discardActiveObject();
         cloned.set({
-            top: cloned.top + 20,
+            left: cloned.left + cloned.width,
             evented: true,
             id: objectId++,
             room_id: activeObject.room_id,
@@ -429,7 +452,7 @@ function HandleElement(obj) {
     console.log("active obj color = ", obj.target.fill);
     $('#fill').val(obj.target.fill);
     colorDiv.innerHTML = obj.target.fill;
-    obj.target.bringToFront();
+    //obj.target.bringToFront();
 }
 
 // if no object is selected reset colorDiv value to white - '#FFFFFF'
@@ -450,6 +473,5 @@ canvas.on('mouse:wheel', function (opt) {
     opt.e.stopPropagation();
 });
 
-//resizeCanvas();
 // save canvas state when page loades for undo/redo
 updateHistory();

@@ -18,7 +18,6 @@ class FloorController extends Controller
     {
         $drawings = FloorDrawing::all();
         $floors = Floor::all();
-        //dd($floors[1]->drawing->id);
         return view('floors.index', compact('floors', 'drawings'));
     }
 
@@ -83,10 +82,9 @@ class FloorController extends Controller
      */
     public function update(Request $request, $floor)
     {   
-        //dd($request['floordrawing_id'], $floor->id);
+    //dd($request['floordrawing_id'], $floor);
         $data = $request->validate([
-            'floordrawing_id' => 'required',
-            
+            'floordrawing_id' => 'required',  
         ]);
         if($data['floordrawing_id'] != '0')
             $floor = Floor::find($floor)->update($data);
@@ -113,14 +111,14 @@ class FloorController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Display floor plan main page
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function showMap()
     {
-        $floors = Floor::all();
+        $floors = Floor::whereNotNull('floordrawing_id')->orderBy('floor_id')->get();
+        //dd($floors);
         return view('floors.map', compact('floors'));
     }
 }

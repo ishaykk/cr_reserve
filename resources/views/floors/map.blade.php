@@ -8,7 +8,7 @@
 @endsection
 @section('content')
 <div class="row m-4">
-    <div class='col-12'>
+    <div class="col-12">
         <div class="errors text-danger">
         @foreach($errors->all() as $message)
             <li>{{ $message }}</li>
@@ -20,7 +20,7 @@
                 <select class="form-select ml-2" id="floor_select" name="floor_select" aria-label="Default select example">
                     <option value="">Select Floor</option>    
                     @foreach($floors as $floor)
-                    <option value="{{ $floor->id }}">{{ $floor->floor_id }}</option>
+                    <option value="{{ $floor->floordrawing_id }}">{{ $floor->floor_id }}</option>
                     @endforeach
                 </select>
         </div>
@@ -37,13 +37,11 @@
     const canvas = new fabric.Canvas('canvas', {}); 
     $('#floor_select').change(function () {
         canvas.setZoom(0.9);
-        console.log('selection changed');
+        console.log('selection changed to option #' + $(this).val());
         let selectIndex = $(this).val();
-        let floors = {!! $floors !!};
-        //console.log(floorDrawing[selectionIndex-1].floordrawing_id);
         canvas.clear();
         if(selectIndex) { // check if selection is valid (not first option)
-            let selectionIndex = floors[$(this).val() - 1].floordrawing_id;
+            let drawingId = parseInt(selectIndex);
             $.ajaxSetup({
                 beforeSend: function(xhr, type) {
                     if (!type.crossDomain) {
@@ -55,10 +53,10 @@
                 url: '/floordrawings/getDrawing/',
                 method: 'post',
                 data: {
-                    selectionIndex,   
+                    drawingId,   
                 },
                 success: function(res) {
-                    console.log('Got response from server with canvas data');
+                    console.log(res);
                     canvas.setWidth(window.innerWidth - 100) ;  
                     canvas.setHeight(window.innerHeight);
                     canvas.loadFromJSON(res, () => {

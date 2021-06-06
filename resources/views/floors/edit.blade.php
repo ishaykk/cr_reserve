@@ -47,9 +47,10 @@
 <script>
     const canvas = new fabric.Canvas('canvas', {}); 
     $('#floordrawing_id').change(function () {
-        let selectionIndex = $(this).val();
+        const selectionIndex = $(this).val();
         canvas.clear();
         if(selectionIndex) { // check if selection is valid (not first option)
+            const drawingId = parseInt(selectionIndex);
             $.ajaxSetup({
                 beforeSend: function(xhr, type) {
                     if (!type.crossDomain) {
@@ -61,7 +62,7 @@
                 url: '/floordrawings/getDrawing/',
                 method: 'post',
                 data: {
-                    selectionIndex,   
+                    drawingId,   
                 },
                 success: function(res) {
                     console.log('Got response from server with canvas data');
@@ -77,6 +78,7 @@
                     });
                 },
                 error: function(res) {
+                    console.log('Got Error response from server:')
                     console.log(res);
                 }
             });

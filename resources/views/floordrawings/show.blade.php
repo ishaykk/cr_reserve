@@ -5,18 +5,18 @@
 @endsection
 @section('content')
 <div class="row m-5">
-    <div class='col-10'>
+    <div class="col- col-md-9">
     @if(session()->get('success'))
         <div class="alert alert-success">{{ session()->get('success') }}</div>
     @endif
         <!-- <div class="card">
             <div class="card-header"><strong>Drawing #{{ $drawing->id }}</strong></div>
             <div class="card-body"> -->
-                <canvas id="canvas" width="100" height="100"></canvas>
+                <canvas id="canvas" width="800" height="370" style="border: 2px solid red"></canvas>
             <!-- </div>
         </div> -->
     </div>
-    <div class="col-2 float-left">
+    <div class="col-3 col-md-3 float-left">
         <ul class="list-group-sm" id="roomControl">
             <h6 class="text-center">Room Indicator Tester</h6>
             <li class="list-group-item" id="roomItem1">
@@ -31,41 +31,47 @@
 @endsection
 @section('javascripts')
 <script>
-    const canvas = new fabric.Canvas('canvas', {});  
-    canvas.setWidth(window.innerWidth) ;  
-    canvas.setHeight(window.innerHeight);
+    const canvas = new fabric.Canvas('canvas');  
+    //canvas.setWidth(window.innerWidth) ;  
+    //canvas.setHeight(window.innerHeight);
     const drawingData = {!! $drawing->drawing_data !!};
-    const rooms = {!! $rooms !!};
-    let isThereIndicators = false;
-
+    //console.log(drawingData);
+    
+    //let isThereIndicators = false;
     canvas.loadFromJSON(drawingData, () => {
         roomIndicators = []
         canvas.forEachObject(function(obj) {
+            console.log(obj);
             obj.selectable = false;
             obj.evented = false;
             obj.hasControls = false;
             if(obj.room_id) {
                 roomIndicators.push(obj.room_id);
-                
             }
         });
         canvas.renderAll();
         fillControls(roomIndicators);
     });
 
-    
-
     // zoom 
-    canvas.on('mouse:wheel', function (opt) {
-        var delta = opt.e.deltaY;
-        var zoom = canvas.getZoom();
-        zoom *= 0.999 ** delta;
-        if (zoom > 20) zoom = 20;
-        if (zoom < 0.01) zoom = 0.01;
-        canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-        opt.e.preventDefault();
-        opt.e.stopPropagation();
-    });
+    // canvas.on('mouse:wheel', function (opt) {
+    //     var delta = opt.e.deltaY;
+    //     var zoom = canvas.getZoom();
+    //     zoom *= 0.999 ** delta;
+    //     if (zoom > 20) zoom = 20;
+    //     if (zoom < 0.01) zoom = 0.01;
+    //     canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+    //     opt.e.preventDefault();
+    //     opt.e.stopPropagation();
+    // });
+
+    // window.addEventListener('resize', resizeCanvas, false);
+    // function resizeCanvas() {
+    //     canvas.setHeight(jQuery('#image').height());
+    //     canvas.setWidth(jQuery('#image').width());
+    //     canvas.renderAll();
+    // }
+    // resizeCanvas();
 
     setInterval(() => {
         let occupiedRooms;
@@ -106,9 +112,6 @@
         });
     }
     function fillControls(data) {
-        const rooms = {!! $rooms !!}; // rooms id and occupied status sent from controller
-        const test = '506';
-        console.log(rooms[test]);
         let num = parseInt($('#roomItem1').prop("id").match(/\d+/g));
         data.slice(1).forEach(function(entry) {
             $('#roomItem1').clone().prop('id', 'roomItem' + entry).appendTo('#roomControl');

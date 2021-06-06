@@ -73,10 +73,12 @@ class FloorDrawingController extends Controller
         */
         public function show($id)
         {
-            $rooms = Room::pluck('occupied', 'room_id');
+            //$rooms = Room::pluck('occupied', 'room_id');
             //dd($rooms);
             $drawing = FloorDrawing::findOrFail($id);
-            return view('floordrawings.show', compact('drawing', 'rooms'));
+            //dump(response()->json($drawing->drawing_data));
+            return view('floordrawings.show', compact('drawing'/*, 'rooms'*/));
+            //return response()->json($drawing->drawing_data);    
         }
 
     /**
@@ -135,15 +137,14 @@ class FloorDrawingController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Retrieve the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
     public function getDrawing(Request $request)
     {
-        $drawing = FloorDrawing::findOrFail(json_decode($request['selectionIndex']));
-        //return response()->json($drawing->drawing_data);    
-        return response()->json($drawing->drawing_data);    
+        $drawing = FloorDrawing::findOrFail($request->drawingId);
+        return response()->json($drawing->drawing_data);       
     }
 }
