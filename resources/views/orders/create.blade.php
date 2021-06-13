@@ -8,7 +8,7 @@
     @endif
     <div class="card">
       <div class="card-header"><strong>Available rooms at {{ $dataArray['date_il'] }} between {{ $dataArray['sTime'] }} - {{ $dataArray['eTime'] }}    </strong></div>
-      <div class="card-body">
+      <div class="card-body table-responsive">
         <table class="table">
           <thead>
             <tr>

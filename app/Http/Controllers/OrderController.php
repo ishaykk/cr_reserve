@@ -21,7 +21,7 @@ class OrderController extends Controller
     public function index()
     {
         //$orders = Order::all()->sortByDesc('date');
-        $orders = Order::where('user_id', Auth::id())->get()->sortBy('date');
+        $orders = Order::where('user_id', Auth::id())->get()->sortByDesc('date');
         return view('orders.index', compact('orders'));
     }
 

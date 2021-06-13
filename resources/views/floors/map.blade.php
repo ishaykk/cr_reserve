@@ -7,8 +7,8 @@
 <script src="{{ asset('js/fabricjs/fabric.js') }}"></script>
 @endsection
 @section('content')
-<div class="row m-4">
-    <div class="col-12">
+<div class="row m-1 m-md-4 d-flex justify-content-center">
+    <div class="col-md-12">
         <div class="errors text-danger">
         @foreach($errors->all() as $message)
             <li>{{ $message }}</li>

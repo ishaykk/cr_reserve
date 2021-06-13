@@ -1,8 +1,8 @@
 @extends('layout')
 @section('title', 'Users list')
 @section('content')
-<div class="row">
-<div class='col-12'>
+<div class="row m-1 m-md-5">
+<div class='col-md-12'>
     @if(session()->get('success'))
         <div class="alert alert-success">{{ session()->get('success') }}</div>
     @endif  
@@ -11,8 +11,8 @@
     @endif
         <div class="card">
             <div class="card-header"><strong>Users List</strong></div>
-            <div class="card-body">
-                <table class="table">
+            <div class="card-body table-responsive">
+                <table class="table text-center">
                     <thead>
                     <tr>
                         <th>id</th>
@@ -34,11 +34,9 @@
                                 <td>{{ $user->created_at }}</td>
                                 <td>{{ $user->updated_at }}</td>
                                 <td>
-                                <div class="row">
-                                    <div class="">
-                                        <a class="btn btn-small btn-info" href="{{ route('admin.users.edit', $user->id) }}">Edit</a>
-                                    </div>
-                                    <form class="ml-3" action="{{ route('admin.users.destroy', $user->id) }}" method="post">
+                                <div class="btn-group">
+                                    <a class="btn btn-small btn-info" href="{{ route('admin.users.edit', $user->id) }}">Edit</a>
+                                    <form class="" action="{{ route('admin.users.destroy', $user->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                             <button class="btn btn-small btn-danger" type="submit">Delete</button>

@@ -1,18 +1,18 @@
 @extends('layout')
 @section('title', 'My Orders')
 @section('content')
-<div class="row m-5">
-    <div class='col-12'>
+<div class="row mt-1 m-md-5 d-flex justify-content-center">
+    <div class="col-md-12">
     @if(session()->get('success'))
         <div class="alert alert-success">{{ session()->get('success') }}</div>
     @endif
         <div class="card">
             <!-- <div class="card-header"><strong>Your orders</strong></div> -->
-            <div class="card-header d-flex align-items-center">
+            <div class="card-header">
                     <span class="float-left"><h5><strong>Your orders</strong></h5></span>
                     <span class="float-left ml-2"><a class="btn btn-sm btn-primary" href="{{ url('/orders/search') }}">Create new order</a></span>
             </div>
-            <div class="card-body">
+            <div class="card-body table-responsive">
                 <table class="table">
                     <thead>
                     <tr class="text-center"> 

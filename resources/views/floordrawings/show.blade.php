@@ -4,22 +4,18 @@
 <script src="{{ asset('js/fabricjs/fabric.js') }}"></script>
 @endsection
 @section('content')
-<div class="row m-5">
-    <div class="col- col-md-9">
+<div class="row mt-1 mt-md-3 d-flex justify-content-center">
+    <div class="col-10 col-md-10">
     @if(session()->get('success'))
         <div class="alert alert-success">{{ session()->get('success') }}</div>
     @endif
-        <!-- <div class="card">
-            <div class="card-header"><strong>Drawing #{{ $drawing->id }}</strong></div>
-            <div class="card-body"> -->
-                <canvas id="canvas" width="800" height="370" style="border: 2px solid red"></canvas>
-            <!-- </div>
-        </div> -->
+    <canvas id="canvas" style="border: 2px solid red; overflow-y: scroll;"></canvas>
+ 
     </div>
-    <div class="col-3 col-md-3 float-left">
-        <ul class="list-group-sm" id="roomControl">
+    <div class="col-1 col-md-1 p-0 float-left">
+        <ul class="list-group-sm p-1 m-0" id="roomControl" style="border: 1px solid black;">
             <h6 class="text-center">Room Indicator Tester</h6>
-            <li class="list-group-item" id="roomItem1">
+            <li class="list-group-item m-0 p-0" id="roomItem1" style="border: 0;">
                 <div class="custom-control custom-control-right custom-switch">
                     <input type="checkbox" class="custom-control-input indicator" id="customSwitch1">
                     <label class="custom-control-label" for="customSwitch1">Room 880</label>
@@ -32,16 +28,12 @@
 @section('javascripts')
 <script>
     const canvas = new fabric.Canvas('canvas');  
-    //canvas.setWidth(window.innerWidth) ;  
-    //canvas.setHeight(window.innerHeight);
     const drawingData = {!! $drawing->drawing_data !!};
-    //console.log(drawingData);
     
-    //let isThereIndicators = false;
     canvas.loadFromJSON(drawingData, () => {
         roomIndicators = []
         canvas.forEachObject(function(obj) {
-            console.log(obj);
+            //console.log(obj);
             obj.selectable = false;
             obj.evented = false;
             obj.hasControls = false;
@@ -50,28 +42,29 @@
             }
         });
         canvas.renderAll();
+        canvas.setZoom(0.86);
         fillControls(roomIndicators);
     });
 
-    // zoom 
-    // canvas.on('mouse:wheel', function (opt) {
-    //     var delta = opt.e.deltaY;
-    //     var zoom = canvas.getZoom();
-    //     zoom *= 0.999 ** delta;
-    //     if (zoom > 20) zoom = 20;
-    //     if (zoom < 0.01) zoom = 0.01;
-    //     canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
-    //     opt.e.preventDefault();
-    //     opt.e.stopPropagation();
-    // });
+    //zoom 
+    canvas.on('mouse:wheel', function (opt) {
+        var delta = opt.e.deltaY;
+        var zoom = canvas.getZoom();
+        zoom *= 0.999 ** delta;
+        if (zoom > 20) zoom = 20;
+        if (zoom < 0.01) zoom = 0.01;
+        canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+        opt.e.preventDefault();
+        opt.e.stopPropagation();
+    });
 
-    // window.addEventListener('resize', resizeCanvas, false);
-    // function resizeCanvas() {
-    //     canvas.setHeight(jQuery('#image').height());
-    //     canvas.setWidth(jQuery('#image').width());
-    //     canvas.renderAll();
-    // }
-    // resizeCanvas();
+    window.addEventListener('resize', resizeCanvas, false);
+    function resizeCanvas() {
+        canvas.setHeight(window.innerHeight - 120);
+        canvas.setWidth($('#canvas').parent().parent().width());
+        canvas.renderAll();
+    }
+    resizeCanvas();
 
     setInterval(() => {
         let occupiedRooms;

@@ -15,7 +15,7 @@
 @section('content')
 <div class="container-fluid mt-2">
     <div class="row">
-        <div class="col-12 col-md-12">
+        <div class="col-md-12">
             <ul class="canvasControls">
                 <li class="colorContainer">
                     <input type="color" id="fill" value="#ffffff">
@@ -111,7 +111,7 @@
 
     window.addEventListener('resize', resizeCanvas, false);
     function resizeCanvas() {
-        canvas.setHeight(window.innerHeight - 100);
+        canvas.setHeight(window.innerHeight - 120);
         //canvas.setWidth(window.innerWidth - 150);
         canvas.setWidth($('.canvasControls').width());
         canvas.renderAll();

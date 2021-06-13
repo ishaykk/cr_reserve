@@ -1,8 +1,8 @@
 @extends('layout')
 @section('title', 'Floor listing')
 @section('content')
-<div class="row m-5">
-    <div class="col-10 mx-auto">
+<div class="row m-1 m-md-5 d-flex justify-content-center">
+    <div class="col-md-10">
     @if(session()->get('success'))
         <div class="alert alert-success">{{ session()->get('success') }}</div>
     @endif

@@ -1,14 +1,14 @@
 @extends('layout')
 @section('title', 'Rooms')
 @section('content')
-<div class="row m-5">
-  <div class='col-12'>
+<div class="row m-1 m-md-5">
+  <div class="col-md-12">
     @if(session()->get('success'))
     <div class="alert alert-success">{{ session()->get('success') }}</div>
     @endif
       <div class="card">
         <div class="card-header"><strong>Room List</strong></div>
-        <div class="card-body">
+        <div class="card-body table-responsive">
           <table class="table">
             <thead>
               <tr class="text-center">

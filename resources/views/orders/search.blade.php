@@ -1,14 +1,14 @@
 @extends('layout')
 @section('title', 'Search available rooms')
 @section('content')
-<div class="row m-5">
-    <div class='col-12'>
+<div class="row m-1 m-md-5 d-flex justify-content-center">
+    <div class="col-md-6">
         @if(session()->get('errors'))
         <div class="text-danger mb-2">{{ session()->get('errors') }}</div>
         @endif
         <div class="card">
             <div class="card-header"><strong>Search for Available Rooms</strong></div>
-            <div class="card-body">
+            <div class="card-body table-responsive">
                 <form class="col-md-6" action="/orders/create" method="post" id="form">
                     <div class="form-group">
                         <div class="custom-control custom-switch">
@@ -34,16 +34,16 @@
                     <div class="form-group">
                         <div class="form-inline">
                             <label for="start_time" class=""><strong>Start Time:</strong></label>
-                            <input type="text" class="timepicker ml-3" name="start_time" id="start_time" placeholder="Start Time" autocomplete="off">
-                            <small id="sTimeHelpBlock" class="form-text text-muted ml-2"> 15min steps</small>
+                            <input type="text" class="timepicker ml-md-3" name="start_time" id="start_time" placeholder="Start Time" autocomplete="off">
+                            <small id="sTimeHelpBlock" class="form-text text-muted ml-md-2"> 15min steps</small>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="form-inline">
                             <label for="end_time" class=""><strong>End Time:</strong></label>
-                            <input type="text" class="timepicker ml-4" name="end_time" id="end_time" placeholder="End Time" autocomplete="off">
-                            <small id="eTimeHelpBlock" class="form-text text-muted ml-2"> 15min steps</small>
+                            <input type="text" class="timepicker ml-md-4" name="end_time" id="end_time" placeholder="End Time" autocomplete="off">
+                            <small id="eTimeHelpBlock" class="form-text text-muted ml-md-2"> 15min steps</small>
                         </div>
                     </div>
 
