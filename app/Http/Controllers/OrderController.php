@@ -32,28 +32,9 @@ class OrderController extends Controller
      */
     public function search(Request $request)
     {
-        //if($request->has('room_id'))
-        //    dd($request);
-        //$search = $request->get('room_id');
-        //$rooms = Room::where('room_id', '=', $search)->get();
-        
-        //$search = $request->input('room_id');
-        //if($request->has('room_id'))
-        //    dd($search);
-        //dd($orders);
-        //$bla = DB::select('room_id', 'order_id')->from('orders')->whereRaw('TIMEDIFF(start_time, "2020-12-09 13:00:00") <= 0 AND TIMEDIFF(end_time, "2020-12-09 12:00:00") >= 0')->get();
-        //dd($bla);
-        //$cap = [4, 6, 8, 10, 12, 14];
-//$cap = Room::select('capacity')->distinct()->get();
-        $cap = Room::where('available', '=', 1)->distinct('capacity')->orderBy('capacity', 'asc')->pluck('capacity');
-        //dd($cap);
-        //$user = Auth::user();
-        
-        //$rooms = select('room_id')->from('orders')->whereRaw('TIMEDIFF(start_time, "2020-12-09 13:00:00"  <= 0 AND TIMEDIFF(end_time, "2020-12-09 12:00:00") >= 0))')->get();
+        $cap = Room::where('available', 1)->distinct('capacity')->orderBy('capacity', 'asc')->pluck('capacity');
         $date = Carbon::now('Israel');
-        //dd($rooms);
         return view('orders.search', compact('cap', 'date'));
-        //return view('orders.search', compact('orders')); 
     }
 
     /**
@@ -84,7 +65,7 @@ class OrderController extends Controller
         $dataArray['date'] = $date;
         $dataArray['date_il'] = Carbon::createFromFormat('Y-m-d', $date)->format('d/m/Y');
         //dd($sDateTime, $eDateTime);
-        $rooms = Room::where('capacity', '>=', $cap)->where('projector', '>=', $proj)->whereNotIn('room_id', function($query) use ($date, $eDateTime, $sDateTime) {
+        $rooms = Room::where('capacity', '>=', $cap)->where('available', 1)->where('projector', '>=', $proj)->whereNotIn('room_id', function($query) use ($date, $eDateTime, $sDateTime) {
             $query->setBindings([$date, $eDateTime, $sDateTime])->select('room_id')->from('orders')->whereRaw('date = ?')->whereRaw('(TIMEDIFF(start_time, ?) < 0 AND TIMEDIFF(end_time, ?) > 0)');
         })->get();
         

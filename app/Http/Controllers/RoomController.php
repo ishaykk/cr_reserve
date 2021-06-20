@@ -96,10 +96,10 @@ class RoomController extends Controller
             'capacity' => ['required', 'numeric', 'gt:0',]
             
         ]);
-        //dd($validatedData);
         
-        $data['projector'] = ($request->has('projector')) ? 1 : 0;
-        $data['available'] = ($request->has('available')) ? 1 : 0;
+        $validatedData['projector'] = ($request->has('projector')) ? 1 : 0;
+        $validatedData['available'] = ($request->has('available')) ? 1 : 0;
+        //dd($validatedData);
         Room::findOrFail($room->room_id)->update($validatedData);
         return redirect('rooms')->with('success', 'Room has been updated!');
     }

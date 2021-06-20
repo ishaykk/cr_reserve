@@ -2,7 +2,7 @@
 @section('title', 'Search available rooms')
 @section('content')
 <div class="row m-1 m-md-5 d-flex justify-content-center">
-    <div class="col-md-6">
+    <div class="col-md-10">
         @if(session()->get('errors'))
         <div class="text-danger mb-2">{{ session()->get('errors') }}</div>
         @endif
@@ -34,7 +34,7 @@
                     <div class="form-group">
                         <div class="form-inline">
                             <label for="start_time" class=""><strong>Start Time:</strong></label>
-                            <input type="text" class="timepicker ml-md-3" name="start_time" id="start_time" placeholder="Start Time" autocomplete="off">
+                            <input type="text" class="timepicker ml-md-3" name="start_time" id="start_time" placeholder="Start Time" autocomplete="off" style="width:10rem;">
                             <small id="sTimeHelpBlock" class="form-text text-muted ml-md-2"> 15min steps</small>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                     <div class="form-group">
                         <div class="form-inline">
                             <label for="end_time" class=""><strong>End Time:</strong></label>
-                            <input type="text" class="timepicker ml-md-4" name="end_time" id="end_time" placeholder="End Time" autocomplete="off">
+                            <input type="text" class="timepicker ml-md-4" name="end_time" id="end_time" placeholder="End Time" autocomplete="off" style="width:10rem;">
                             <small id="eTimeHelpBlock" class="form-text text-muted ml-md-2"> 15min steps</small>
                         </div>
                     </div>

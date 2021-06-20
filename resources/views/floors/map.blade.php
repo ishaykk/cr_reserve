@@ -7,7 +7,7 @@
 <script src="{{ asset('js/fabricjs/fabric.js') }}"></script>
 @endsection
 @section('content')
-<div class="row m-1 m-md-4 d-flex justify-content-center">
+<div class="row m-1 d-flex justify-content-center">
     <div class="col-md-12">
         <div class="errors text-danger">
         @foreach($errors->all() as $message)
@@ -25,7 +25,7 @@
                 </select>
         </div>
     </div>
-        <div class="mt-3">
+        <div class="mt-1 d-flex justify-content-center">
             <canvas id="canvas" width="300" height="300"></canvas>
         </div>
     </div>
@@ -35,9 +35,16 @@
 @section('javascripts')
 <script>
     const canvas = new fabric.Canvas('canvas', {}); 
+    
+    function resize() {
+        canvas.setWidth(window.innerWidth - 55);
+        canvas.setHeight(window.innerHeight - 120);
+        //canvas.zoomToPoint({x: canvas.getWidth(), y: canvas.getHeight()}, 1);
+        //canvas.renderAll();
+    }
     $('#floor_select').change(function () {
         canvas.setZoom(0.9);
-        console.log('selection changed to option #' + $(this).val());
+        //console.log('selection changed to option #' + $(this).val());
         let selectIndex = $(this).val();
         canvas.clear();
         if(selectIndex) { // check if selection is valid (not first option)
@@ -56,9 +63,8 @@
                     drawingId,   
                 },
                 success: function(res) {
-                    console.log(res);
-                    canvas.setWidth(window.innerWidth - 100) ;  
-                    canvas.setHeight(window.innerHeight);
+                    //console.log(res);
+                    resize();
                     canvas.loadFromJSON(res, () => {
                         canvas.forEachObject(function(obj) {
                             obj.selectable = false;
@@ -68,6 +74,7 @@
                             obj.top += 100;        
                         });
                         canvas.renderAll();
+                        $('#canvas').css('border', '2px solid black');
                     });
                 },
                 error: function(res) {
@@ -76,6 +83,7 @@
             });
         }
         else {
+            $('#canvas').css('border', '');
             canvas.setWidth(0);  
             canvas.setHeight(0);
         }
