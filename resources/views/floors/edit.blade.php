@@ -49,8 +49,8 @@
     $('#floordrawing_id').change(function () {
         const selectionIndex = $(this).val();
         canvas.clear();
-        if(selectionIndex) { // check if selection is valid (not first option)
-            const drawingId = parseInt(selectionIndex);
+        const drawingId = parseInt(selectionIndex);
+        if(drawingId != 0) { // check if selection is valid (not first option)
             $.ajaxSetup({
                 beforeSend: function(xhr, type) {
                     if (!type.crossDomain) {
