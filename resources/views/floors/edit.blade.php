@@ -51,6 +51,7 @@
         canvas.clear();
         if(selectionIndex) { // check if selection is valid (not first option)
             const drawingId = parseInt(selectionIndex);
+            console.log("drawingId = ", drawingId);
             $.ajaxSetup({
                 beforeSend: function(xhr, type) {
                     if (!type.crossDomain) {
