@@ -26,7 +26,7 @@
                             <select class="form-select ml-2" id="floor" name="floor" aria-label="Default select example">
                                 <option value="">Select Floor</option>    
                             @foreach($floors as $floor)
-                                <option value="{{ $floor->id }}">{{ $floor->floor_id }}</option>
+                                <option value="{{ $floor->floor_id }}">{{ $floor->floor_id }}</option>
                             @endforeach
                             </select>
                         </div>
