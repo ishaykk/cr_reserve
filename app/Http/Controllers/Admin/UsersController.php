@@ -89,8 +89,8 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        if($user->id == Auth::id())
-            return redirect()->back()->with('error', 'Deleting admin account isnt allowed!!!');
+        if($user->hasRole('admin'))
+            return redirect()->back()->with('error', "Deleting admin account isn't allowed!");
         $user->roles()->detach();
         $user->delete();
 

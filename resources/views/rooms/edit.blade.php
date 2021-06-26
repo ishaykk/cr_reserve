@@ -23,10 +23,22 @@
                     </div>
                     
                     
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <div class="form-inline">
                             <label for="floor"><strong>Floor: </strong></label>
                             <input type="number" id="floor" name="floor" class="form-control col-2 ml-2" value="{{ $room->floor }}">
+                        </div>
+                    </div> -->
+
+                    <div class="form-group">
+                        <div class="form-inline">
+                            <label for="floor"><strong>Floor: </strong></label>
+                            <select class="form-select ml-2" id="floor" name="floor" aria-label="Default select example">
+                                <option value="">Select Floor</option>    
+                            @foreach($floors as $floor)
+                                <option value="{{ $floor->floor_id }}">{{ $floor->floor_id }}</option>
+                            @endforeach
+                            </select>
                         </div>
                     </div>
 

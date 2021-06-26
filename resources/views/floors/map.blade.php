@@ -7,7 +7,7 @@
 <script src="{{ asset('js/fabricjs/fabric.js') }}"></script>
 @endsection
 @section('content')
-<div class="row m-1 d-flex justify-content-center">
+<div class="row m-2 d-flex justify-content-center">
     <div class="col-md-12">
         <div class="errors text-danger">
         @foreach($errors->all() as $message)
@@ -75,6 +75,7 @@
                         });
                         canvas.renderAll();
                         $('#canvas').css('border', '2px solid black');
+                        getRoomData();
                     });
                 },
                 error: function(res) {
@@ -98,5 +99,39 @@
         opt.e.preventDefault();
         opt.e.stopPropagation();
     });
+    
+    const getRoomData = () => 
+    {
+        setInterval(() => {
+            let occupiedRooms;
+            $.ajax({
+                url:"/api/rooms/",
+                type: "GET",
+                data: {
+                },
+                success: function (res) {
+                    occupiedRoom = JSON.parse(JSON.stringify(res));
+                    changeState(occupiedRoom);
+                },
+                error: function(res) {
+                    console.log(res);
+                }
+            })
+        }, 5000);
+    }
+
+    // change indicators mode according to their state in database
+    function changeState(data) {
+        console.log("data = ", data);
+        canvas.getObjects().forEach(function(obj) {
+            if(obj.room_id) {
+                if(Object.values(data).includes(Number(obj.room_id))) 
+                    obj.set('fill', '#FF0000');
+                else 
+                    obj.set('fill', '#00FF00');
+                canvas.renderAll();
+            }
+        });
+    }
 </script>
 @endsection
