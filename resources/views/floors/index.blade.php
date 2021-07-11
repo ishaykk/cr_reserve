@@ -33,7 +33,7 @@
                                 @if($floor->drawing)
                                     <a class="btn btn-sm btn-success" href="{{ route('floordrawings.show', $floor->drawing->id) }}">Show Drawing</a>
                                 @else
-                                    No drawings
+                                    No drawing
                                 @endif
                             </td>
                             <td>

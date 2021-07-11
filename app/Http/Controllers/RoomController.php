@@ -72,8 +72,9 @@ class RoomController extends Controller
      */ 
     public function edit($id)
     {
+        $floors = Floor::all();
         $room = Room::findOrFail($id);
-        return view('rooms.edit', compact('room'));
+        return view('rooms.edit', compact('room', 'floors'));
     }
 
     /**
@@ -89,6 +90,7 @@ class RoomController extends Controller
         $validatedData = $request->validate([
             'room_id' => [
                 'required',
+                'min:3',
                 'gt:0',
                 Rule::unique('rooms')->ignore($room),
             ],
