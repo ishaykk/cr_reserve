@@ -43,7 +43,10 @@
         });
         canvas.renderAll();
         canvas.setZoom(0.86);
-        fillControls(roomIndicators);
+        if(roomIndicators.length > 0)
+            fillControls(roomIndicators);
+        else 
+            $('#roomControl').remove();
     });
 
     //zoom 
@@ -104,6 +107,8 @@
             }
         });
     }
+
+    // inject indicator test for each room into "Room Indicator Tester" sidebar
     function fillControls(data) {
         let num = parseInt($('#roomItem1').prop("id").match(/\d+/g));
         data.slice(1).forEach(function(entry) {
@@ -118,6 +123,7 @@
        $('#roomItem1').attr('id', 'roomItem' + data[0]);
     }
 
+    // Event listener for each indicator tester checkbox
     $('.indicator').change(function(e) {
         if(e.originalEvent) { // user-triggered event
             const checkboxId = $(this).attr('id');
