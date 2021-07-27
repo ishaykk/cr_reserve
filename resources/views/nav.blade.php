@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-custom navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="/"><img src="{{ asset('img/logo.svg') }}" alt=""></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -6,9 +6,11 @@
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
   <!-- Left Side Of Navbar -->
     <ul class="navbar-nav mr-auto">
+    @if ($floorsDrawingsCount > 0)
       <li class="nav-item active">
         <a class="nav-link" href="{{ url('/floors/map') }}">Floor Plans<span class="sr-only">(current)</span></a>
       </li>
+    @endif
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="ordersDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

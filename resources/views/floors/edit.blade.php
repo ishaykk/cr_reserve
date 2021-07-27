@@ -24,9 +24,9 @@
                         <div class="form-inline">
                             <label for="floordrawing_id"><strong>Select Floor Drawing: </strong></label>
                             <select class="form-select ml-2" id="floordrawing_id" name="floordrawing_id" aria-label="Default select example">
-                                <option value="0">No Drawing</option>    
+                                <option value="0">No Drawing</option>  
                             @foreach($drawings as $draw)
-                                <option value="{{ $draw->id }}">Floor: {{ $draw->floor->floor_id }}, Building: {{ $draw->building }}</option>
+                                <option value="{{ $draw->id }}">Floor: {{ $draw->floor_id }}, Building: {{ $draw->building }}</option>
                             @endforeach
                             </select>
                         </div>

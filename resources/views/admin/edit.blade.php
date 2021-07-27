@@ -6,11 +6,6 @@
         @if(session()->get('error'))
         <div class="alert alert-danger">{{ session()->get('error') }}</div>
         @endif
-        <ul class="errors text-danger">
-            @foreach($errors->all() as $message)
-            <li>{{ $message }}</li>
-            @endforeach
-        </ul>
         <div class="card">
             <div class="card-header"><strong>Edit User: {{ $user->name }}</strong></div>
             <div class="card-body table-responsive">
@@ -27,6 +22,7 @@
                         @endforeach
                     </div>
 
+                    <span class="text-danger">{{ $errors->getBag('default')->first('userid') }}</span>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="userid">User id</span>
@@ -34,6 +30,7 @@
                         <input type="number" class="form-control" value="{{ $user->id }}" name="userid" aria-label="userid" aria-describedby="userid" readonly>
                     </div>
 
+                    <span class="text-danger">{{ $errors->getBag('default')->first('name') }}</span>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="username">Username</span>
@@ -41,6 +38,7 @@
                         <input type="text" class="form-control" value="{{ $user->name }}" name="name" aria-label="username" aria-describedby="username">
                     </div>
 
+                    <span class="text-danger">{{ $errors->getBag('default')->first('email') }}</span>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="email">Email</span>

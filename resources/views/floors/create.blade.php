@@ -6,12 +6,8 @@
         <div class="card">
             <div class="card-header"><strong>Add a new Floor</strong></div>
             <div class="card-body">
-                <ul class="errors text-danger">
-                    @foreach($errors->all() as $message)
-                        <li>{{ $message }}</li>
-                    @endforeach
-                </ul>
                 <form action="/floors" method="post">
+                    <span class="text-danger">{{ $errors->getBag('default')->first('floor_id') }}</span>
                     <div class="form-group">
                         <div class="form-inline">
                             <label for="floor_id"><strong>Floor Number: </strong></label>

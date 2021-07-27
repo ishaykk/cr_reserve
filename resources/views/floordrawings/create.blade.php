@@ -35,7 +35,7 @@
                 <li><button onclick="redo()" id="redo" disabled>Redo</button></li>
                 <li><a href="#" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#saveJsonModal">Save JSON
                         in DB</a></li>
-                <li><a href="#" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#addRoomModal">Add Room Indicator</a></li>
+                <li><a href="#" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#addIndicatorsModal">Add Rooms Indicators</a></li>
                 <div class="modal fade" id="saveJsonModal">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
@@ -45,19 +45,22 @@
                             </div>
                             <div class="modal-body">
                                 <form id="createDrawForm" class="ml-2" method="post">
-                                    <div class="form-group form-inline row m-3">
+                                    <div class="error floor_id-error text-danger"></div>
+                                    <div class="form-group form-inline row ml-3">
                                         <label for="floor_id" class="col-form-label">Floor Number:</label>
                                         <select class="form-select ml-2" id="floor_id" name="floor_id" aria-label="Default select example">
                                             @foreach($floors as $floor)
-                                                <option value="{{ $floor->id }}">{{ $floor->floor_id }}</option>
+                                            <option value="{{ $floor->floor_id }}">{{ $floor->floor_id }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="form-group form-inline row m-3">
+                                    <div class="error building-error text-danger ml-3"></div>
+                                    <div class="form-group form-inline row ml-3">
                                         <label for="building" class="col-form-label">Building name:</label>
                                         <input type="text" name="building" class="form-control col-8 ml-2" id="building">
                                     </div>
-                                    <div class="form-group form-inline row m-3">
+                                    <div class="error description-error text-danger ml-3"></div>
+                                    <div class="form-group form-inline row ml-3">
                                         <label for="description" class="col-form-label">Description:</label>
                                         <textarea rows="4" cols="50" class="form-control col-12" id="description" name="description" placeholder="Enter description here... (optional)"></textarea>
                                     </div>
@@ -70,25 +73,25 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" id="addRoomModal">
+                <div class="modal fade" id="addIndicatorsModal">
                     <div class="modal-dialog modal-sm modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title w-100 text-center">Add Room Indicator</h4>
+                                <h4 class="modal-title w-100 text-center">Add Indicators</h4>
                                 <button class="close" data-dismiss="modal">&times;</button>
                             </div>
                             <div class="modal-body">
-                                <form id="addRoomsForm" onSubmit="return handleAddRoom()">
+                                <form id="addIndicatorsForm" onSubmit="return handleAddIndicators()">
                                     <div class="form-group form-inline justify-content-center">
-                                        <label for="room_id" class="col-form-label">Room Number:</label>
-                                        <select class="form-select ml-2" id="room_id" aria-label="Default select example">
-                                            @foreach($rooms as $room)
-                                                <option value="{{ $room->room_id }}">{{ $room->room_id }}</option>
+                                        <label for="floorSelect" class="col-form-label">Floor Number:</label>
+                                        <select class="form-select ml-2" id="floorSelect" aria-label="Default select example">
+                                            @foreach($uniqueFloors as $floor)
+                                            <option value="{{ $floor }}">{{ $floor }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="modal-footer d-flex justify-content-center">
-                                        <button class="btn btn-sm btn-primary" type="submit">Add Room Indicator</button>
+                                        <button class="btn btn-sm btn-primary" type="submit">Add Indicators</button>
                                         <button type="button" name="description" class="btn btn-sm btn-danger ml-3" data-dismiss="modal">Cancel</button>
                                     </div>
                                 </form>
@@ -100,24 +103,23 @@
             <canvas id="canvas"></canvas>
             <div id="contextmenu-output"></div>
         </div>
-        
+
     </div>
 </div>
 @endsection
 
 @section('javascripts')
+<script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
 <script src="{{ asset('js/fabricjs/myFabric.js') }}"></script>
 <script>
-
     window.addEventListener('resize', resizeCanvas, false);
+
     function resizeCanvas() {
         canvas.setHeight(window.innerHeight - 120);
-        //canvas.setWidth(window.innerWidth - 150);
         canvas.setWidth($('.canvasControls').width());
         canvas.renderAll();
         console.log($('.canvasControls').width());
         console.log($('#canvas').width());
-
     }
     resizeCanvas();
     let objX = 100;
@@ -144,73 +146,96 @@
             // contentType: 'application/json',
             success: function(res) {
                 $('#saveJsonModal').modal('hide');
-            },
-            error: function(res) {
                 console.log(res);
+                Swal.fire({
+                    toast: 'true',
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Your drawing has been saved successfully!',
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                    timer: 2500
+                })
+            },
+            error: function(jqXhr, json, errorThrown) { // this are default for ajax errors 
+                const errors = jqXhr.responseJSON;
+                let errorsHtml = '';
+                $('.error').html(''); // empty all error content
+                $.each(errors['errors'], function(index, value) { // show error/s inside modal accordingly to response
+                    $('.' + index + '-error').html('<p>' + value + '</p>');
+                });
             }
         });
     });
-    function handleAddRoom() {
+
+    function handleAddIndicators() {
         event.preventDefault();
-        const room_id = $('#room_id').val();
-        if (!room_id) {
-            alert("Empty room_id value!");
+        const selectedFloorNum = $('#floorSelect').val();
+        if (!selectedFloorNum) {
+            alert("Empty floorNum value!");
+            $('#addIndicatorsModal').modal('hide');
             return;
         }
-        console.log("room id = ", room_id);
-        const indicator = new fabric.Circle({
-            room_id: room_id,
-            left: objX,
-            top: 50,
-            radius: 15,
-            fill: '#000000',
-            objectCaching: false,
-            stroke: '#FF0000',
-            strokeWidth: 1,
-            cornerStyle: 'circle',
-            cornerSize: 4,
-            hasControls: true,
-        });
-        objX += 45;
-        const text = new fabric.IText(room_id, {
-            fontSize: 20,
-            fontFamily: 'Tahoma',
-            stroke: '#000000',
-            left: indicator.left,
-            top: indicator.top + 35,
-        });
-        // const group = new fabric.Group([indicator, text], {
-        //     left: 150,
-        //     top: 100,
-        //     angle: 0
-        // });
-        canvas.add(text);
-        canvas.add(indicator);
-        canvas.setActiveObject(indicator);
-        $('#addRoomModal').modal('hide');
+        const rooms = {!!$rooms!!};
+        if (Object.keys(rooms).length > 0) // check that rooms obj is not empty
+        {
+            rooms.forEach(room => {
+                if (room.floor == selectedFloorNum) {
+                    let indicator = new fabric.Circle({
+                        room_id: room.room_id.toString(),
+                        left: objX,
+                        top: 50,
+                        radius: 15,
+                        fill: '#000000',
+                        objectCaching: false,
+                        stroke: '#FF0000',
+                        strokeWidth: 1,
+                        cornerStyle: 'circle',
+                        cornerSize: 4,
+                        hasControls: true,
+                    });
+                    console.log(objX);
+                    objX += 60;
+                    let text = new fabric.IText(room.room_id.toString(), {
+                        fontSize: 20,
+                        fontFamily: 'Tahoma',
+                        stroke: '#000000',
+                        left: indicator.left,
+                        top: indicator.top + 35,
+                    });
+                    canvas.add(text);
+                    canvas.add(indicator);
+                    canvas.renderAll();
+                }
+                updateRoomsState();
+            });
+        }
+        $('#addIndicatorsModal').modal('hide');
     }
-    setInterval(() => {
-        let occupiedRooms;
-        $.ajax({
-            url:"/api/rooms/",
-            type: "GET",
-            data: {
-            },
-            success: function (res) {
-                occupiedRoom = JSON.parse(JSON.stringify(res));
-                changeState(occupiedRoom);
-            },
-            error: function(res) {
-                console.log(res);
-            }
-        })
-    }, 5000);
+
+    function updateRoomsState() {
+        setInterval(() => {
+            let occupiedRooms;
+            $.ajax({
+                url: "/api/rooms/",
+                type: "GET",
+                data: {},
+                success: function(res) {
+                    occupiedRoom = JSON.parse(JSON.stringify(res));
+                    changeState(occupiedRoom);
+                },
+                error: function(res) {
+                    console.log(res);
+                }
+            })
+        }, 5000);
+    }
 
     function changeState(data) {
-        console.log("data = ", data);
+        console.log("occupied rooms = ", data);
         canvas.getObjects().forEach(function(obj) {
-            if(obj.room_id) {
-                if(Object.values(data).includes(Number(obj.room_id)))
+            if (obj.room_id) {
+                if (Object.values(data).includes(Number(obj.room_id)))
                     obj.set('fill', '#FF0000');
                 else
                     obj.set('fill', '#00FF00');

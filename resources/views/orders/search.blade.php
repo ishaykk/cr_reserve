@@ -3,9 +3,6 @@
 @section('content')
 <div class="row m-1 m-md-5 d-flex justify-content-center">
     <div class="col-md-10">
-        @if(session()->get('errors'))
-        <div class="text-danger mb-2">{{ session()->get('errors') }}</div>
-        @endif
         <div class="card">
             <div class="card-header"><strong>Search for Available Rooms</strong></div>
             <div class="card-body table-responsive">
@@ -17,6 +14,7 @@
                         </div>
                     </div>
                     
+                    <span class="text-danger">{{ $errors->getBag('default')->first('capacity') }}</span>
                     <div class="form-group">
                         <label for="capacity"><strong>Minimum capacity: </strong></label>
                         <select class="ml-2" name="capacity" id="capacity">
@@ -26,19 +24,22 @@
                         </select>
                     </div> 
 
+                    <span class="text-danger">{{ $errors->getBag('default')->first('date') }}</span>
                     <div class="form-group">
                         <label for="date"><strong>Date:</strong></label>
-                        <input type="date" class="" name="date" id="order-date" value={{ $date }}>
+                        <input type="date" name="date" id="order-date" value={{ $date }}>
                     </div>
-
+                    
+                    <span class="text-danger">{{ $errors->getBag('default')->first('start_time') }}</span>
                     <div class="form-group">
                         <div class="form-inline">
-                            <label for="start_time" class=""><strong>Start Time:</strong></label>
+                            <label for="start_time"><strong>Start Time:</strong></label>
                             <input type="text" class="timepicker ml-md-3" name="start_time" id="start_time" placeholder="Start Time" autocomplete="off" style="width:10rem;">
                             <small id="sTimeHelpBlock" class="form-text text-muted ml-md-2"> 15min steps</small>
                         </div>
                     </div>
-
+                    
+                    <span class="text-danger">{{ $errors->getBag('default')->first('end_time') }}</span>
                     <div class="form-group">
                         <div class="form-inline">
                             <label for="end_time" class=""><strong>End Time:</strong></label>

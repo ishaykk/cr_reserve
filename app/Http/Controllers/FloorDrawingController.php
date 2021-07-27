@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\FloorDrawing;
 use App\Room;
 use App\Floor;
-use Carbon\Carbon;
+use Auth;
 
 class FloorDrawingController extends Controller
 {
@@ -28,9 +29,10 @@ class FloorDrawingController extends Controller
      */
     public function create() {
         $floors = Floor::all();
+        $uniqueFloors = array_unique(Room::all()->pluck('floor')->toArray());
         //dd($floors);
         $rooms = Room::all();
-        return view('floordrawings.create', compact('rooms', 'floors'));
+        return view('floordrawings.create', compact('rooms', 'floors', 'uniqueFloors'));
     }
 
     /**
@@ -40,30 +42,55 @@ class FloorDrawingController extends Controller
      */
     public function store(Request $request) 
     {
-        $request['floor_id'] = $request->get('formData')[0]['value'];
-        $request['building'] = $request->get('formData')[1]['value'];
-        $request['description'] = $request->get('formData')[2]['value'];
-        $request['drawing_data'] = $request->get('drawingJsonData');
-        //$request['created_by'] = Auth::id();
-        //$request['last_update_by'] = Auth::id();
+        $data['floor_id'] = $request->get('formData')[0]['value'];
+        $data['building'] = $request->get('formData')[1]['value'];
+        $data['description'] = $request->get('formData')[2]['value'];
+        $data['drawing_data'] = $request->get('drawingJsonData');
+        //$data = $request->get('formData');
+        $data['created_by'] = $data['last_update_by'] = Auth::id();
         //return response()->json($request->all());
         //return response()->json($drawingJsonData);
-        $data = request()->validate([
-            'floor_id' => 'required|numeric',
-            'building' => 'required|max:20',
-            'description' => 'required|max:255',
-            'drawing_data' => 'required|json',
+        // $data = request()->validate([
+        //     'floor_id' => 'required|numeric',
+        //     'building' => 'required|max:20',
+        //     'description' => 'max:255',
+        //     'drawing_data' => 'required|json',
             // 'created_by' => [
             //     'required',
             //     Rule::exists('users')->where(function ($query) {
             //         $query->where('id', Auth::id());
             //     })
             // ],
+        //]);
+        //$data = ['data'=> $request->get('formData')];
+        //$data2 = json_decode($request->get('formData'), true);
+        $validator = validator::make($data, [
+            'floor_id' => 'required|numeric',
+            'building' => 'required|max:20',
+            'description' => 'max:255',
+            'drawing_data' => 'required|json',
         ]);
+
+        if ($validator->fails()) 
+        {
+            if($request->ajax())
+            {
+                return response()->json(array(
+                    'success' => false,
+                    'message' => 'There are incorect values in the form!',
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 422);
+            }
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
         
         $drawing = FloorDrawing::firstOrCreate($data);
-        return response()->json(['url'=>url('/floordrawings')]);
+        //return response()->json(['url'=>url('/floordrawings')]);
         //return redirect('floordrawings')->with('success', 'Drawing added to database!');
+        //return response()->json(['success' => 'Drawing has benn added to database successfully!']);
+        return response()->json(['data' => $validator]);
     }
     /**
         * Display the specified resource.

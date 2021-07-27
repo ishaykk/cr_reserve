@@ -16,7 +16,6 @@
 	.navbar .nav-item .dropdown-menu{ margin-top:0; }
 }	 */
 /* ============ desktop view .end// ============ */
-
 @media (min-width: 992px){
 	.navbar {
 		min-height: 10px;

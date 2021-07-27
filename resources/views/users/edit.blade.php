@@ -6,20 +6,17 @@
         <div class="card">
             <div class="card-header"><strong>Edit User {{ $user->name }}</strong></div>
             <div class="card-body">
-                <ul class="errors text-danger">
-                    @foreach($errors->all() as $message)
-                        <li>{{ $message }}</li>
-                    @endforeach
-                </ul>
                 <form action="{{ route('users.update', $user->id) }}" method="POST">
                     @csrf
                     @method('PATCH')
+                    <span class="text-danger">{{ $errors->getBag('default')->first('name') }}</span>
                     <div class="form-group">
                         <div class="form-inline">
                             <label for="name"><strong>User name: </strong></label>
                             <input type="text" id="name" name="name" class="form-control col-3 ml-2" value="{{ $user->name }}"> 
                         </div> 
                     </div>     
+                    <span class="text-danger">{{ $errors->getBag('default')->first('email') }}</span>
                     <div class="form-group">
                         <div class="form-inline">
                             <label for="email"><strong>Email: </strong></label>

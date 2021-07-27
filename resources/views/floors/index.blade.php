@@ -31,9 +31,12 @@
                             <td>{{ $floor->floor_id }}</td>
                             <td>
                                 @if($floor->drawing)
-                                    <a class="btn btn-sm btn-success" href="{{ route('floordrawings.show', $floor->drawing->id) }}">Show Drawing</a>
+                                    <a class="btn btn-sm btn-success" href="{{ route('floordrawings.show', $floor->drawing->id) }}">Show Linked Drawing</a>
+                                @endif
+                                @if($drawings->isEmpty())
+                                    <span>No Drawings</span>
                                 @else
-                                    No drawing
+                                    <a class="btn btn-sm btn-info" href="{{ route('floors.edit', $floor->id) }}">Link Drawing</a>
                                 @endif
                             </td>
                             <td>
@@ -41,7 +44,7 @@
                                     <a class="btn btn-small btn-info" href="{{ route('floors.edit', $floor->id) }}">Edit</a>
                                 </div> -->
                                 <div class="btn-group">
-                                    <a class="btn btn-sm btn-info" href="{{ route('floors.edit', $floor->id) }}">Edit</a>                                    
+                                    <!-- <a class="btn btn-sm btn-info" href="{{ route('floors.edit', $floor->id) }}">Edit</a>                                     -->
                                     <form action="{{ route('floors.destroy', $floor->id) }}" method="post">
                                     @csrf
                                     @method('DELETE')

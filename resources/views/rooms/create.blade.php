@@ -6,36 +6,35 @@
         <div class="card">
             <div class="card-header"><strong>Add a new Room</strong></div>
             <div class="card-body">
-                <ul class="errors text-danger">
-                    @foreach($errors->all() as $message)
-                        <li>{{ $message }}</li>
-                    @endforeach
-                </ul>
                 <form action="/rooms" method="post">
+
+                    <span class="text-danger">{{ $errors->getBag('default')->first('room_id') }}</span>
                     <div class="form-group">
                         <div class="form-inline">
                             <label for="room_id"><strong>Room Number: </strong></label>
-                            <input type="number" id="room_id" name="room_id" class="form-control col-2 ml-2" aria-describedby="roomIdHelpBlock">
+                            <input type="number" id="room_id" name="room_id" value="{{ old('room_id') }}" class="form-control col-2 ml-2" aria-describedby="roomIdHelpBlock">
                             <small id="roomIdHelpBlock" class="form-text text-muted ml-2"> e.g. 406, first digit is floor number, second and third are room number</small>
                         </div>
                     </div>
                     
+                    <span class="text-danger">{{ $errors->getBag('default')->first('floor') }}</span>
                     <div class="form-group">
                         <div class="form-inline">
                             <label for="floor"><strong>Floor: </strong></label>
                             <select class="form-select ml-2" id="floor" name="floor" aria-label="Default select example">
                                 <option value="">Select Floor</option>    
                             @foreach($floors as $floor)
-                                <option value="{{ $floor->floor_id }}">{{ $floor->floor_id }}</option>
+                                    <option value="{{ $floor->floor_id }}" {{ old('floor') == $floor->floor_id ? 'selected' : '' }}>{{ $floor->floor_id }}</option>
                             @endforeach
                             </select>
                         </div>
                     </div>
 
+                    <span class="text-danger">{{ $errors->getBag('default')->first('capacity') }}</span>
                     <div class="form-group">
                         <div class="form-inline">
                             <label for="capacity"><strong>Capacity: </strong></label>
-                            <input type="number" id="capacity" name="capacity" class="form-control col-2 ml-2">
+                            <input type="number" id="capacity" name="capacity" value="{{ old('capacity') }}" class="form-control col-2 ml-2">
                         </div>
                     </div> 
                     <div class="form-group">

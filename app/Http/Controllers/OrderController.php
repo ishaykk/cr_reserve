@@ -53,7 +53,6 @@ class OrderController extends Controller
             'start_time' => 'required',
             'end_time' => 'required|after:start_time'
         ]);
-        //dd($data);
 
         $proj = $request->has('proj') ? 1 : 0;
         $date = $data['date'];
