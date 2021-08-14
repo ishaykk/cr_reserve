@@ -63,12 +63,14 @@
 <script>
 $(function() {
     //$('#form').reset();
+    const constants = {!! $config !!};
+    console.log(configValues);
     $('input[type=checkbox]').checked = false;
     $('#start_time').timepicker({
     timeFormat: 'H:mm',
-    interval: 15,
-    minTime: '7',
-    maxTime: '18:00',
+    interval: constants.orders.orders_time_interval,
+    minTime: constants.orders.min_start_time,
+    maxTime: constants.orders.max_start_time,
     dynamic: true,
     dropdown: true,
     scrollbar: true
@@ -76,9 +78,9 @@ $(function() {
     //console.log(element);
     $('#end_time').timepicker({
     timeFormat: 'H:mm',
-    interval: 15,
-    minTime: '7:15',
-    maxTime: '19:00',
+    interval: constants.orders.orders_time_interval,
+    minTime: constants.orders.min_end_time,
+    maxTime: constants.orders.max_end_time,
     dynamic: true,
     dropdown: true,
     scrollbar: true

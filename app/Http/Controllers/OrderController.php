@@ -8,6 +8,7 @@ use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 use Carbon\Carbon;
 use \DateTime;
 
@@ -34,7 +35,8 @@ class OrderController extends Controller
     {
         $cap = Room::where('available', 1)->distinct('capacity')->orderBy('capacity', 'asc')->pluck('capacity');
         $date = Carbon::now('Israel');
-        return view('orders.search', compact('cap', 'date'));
+        $config = Config::get('constants');
+        return view('orders.search', compact('cap', 'date', 'config'));
     }
 
     /**
