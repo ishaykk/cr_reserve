@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Room;
 use App\Order;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -157,5 +158,33 @@ class OrderController extends Controller
     {
         $orders = Order::all()->sortByDesc('date');
         return view('orders.all', compact('orders'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getOrdersStats()
+    {
+        $dateNowIL = Carbon::now()->format('Y-m-d');
+        $dateBefore7Days = Carbon::now('Israel')->subDays(30)->format('Y-m-d');
+
+        $last7DaysOrders = Order::whereBetween('date', [$dateBefore7Days, $dateNowIL])->orderBy('room_id')->get(['user_id', 'room_id', 'date', 'start_time', 'end_time']);
+        
+        $amchartsFormat = [];
+        for ($i = 0; $i < count($last7DaysOrders); $i++)
+        {
+            $amchartsFormat[$i]['roomid'] = strval($last7DaysOrders[$i]['room_id']);
+            $date = Carbon::parse($last7DaysOrders[$i]['date'])->toDateString();
+            $amchartsFormat[$i]['date'] = $date;
+            $amchartsFormat[$i]['fromDate'] = $date. " ". Carbon::parse($last7DaysOrders[$i]['start_time'])->setTimeZone('Israel')->toTimeString();
+            $amchartsFormat[$i]['toDate'] = $date. " ". Carbon::parse($last7DaysOrders[$i]['end_time'])->setTimeZone('Israel')->toTimeString();
+            $amchartsFormat[$i]['createdBy'] = $last7DaysOrders[$i]->user()->pluck('name')[0];
+        }
+        $ordersJsonData = json_encode(array_values($amchartsFormat), JSON_PRETTY_PRINT);
+        //dd($ordersJsonData);
+        
+        return view('orders.stats', compact('ordersJsonData'));
     }
 }

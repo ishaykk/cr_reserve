@@ -64,7 +64,6 @@
 $(function() {
     //$('#form').reset();
     const constants = {!! $config !!};
-    console.log(configValues);
     $('input[type=checkbox]').checked = false;
     $('#start_time').timepicker({
     timeFormat: 'H:mm',

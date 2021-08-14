@@ -23,6 +23,7 @@ Route::get('floors/map', 'FloorController@showMap')->name('floors.map');
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::post('floordrawings/getDrawing/', 'FloorDrawingController@getDrawing');
+Route::get('/orders/stats/', 'OrderController@getOrdersStats')->name('orders.stats');
 
 Route::get('/orders', 'OrderController@index')->name('orders.index');
 Route::get('/orders/search', 'OrderController@search')->name('orders.search');

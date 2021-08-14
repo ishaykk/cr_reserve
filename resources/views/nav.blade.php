@@ -19,6 +19,7 @@
         <ul class="dropdown-menu" aria-labelledby="ordersDropdownMenuLink">
           <li><a class="dropdown-item" href="{{ route('orders.index') }}">View orders</a></li>
           <li><a class="dropdown-item" href="{{ route('orders.search') }}">Create new order</a></li>
+          <li><a class="dropdown-item" href="{{ route('orders.stats') }}">View Orders Data</a></li>
         </ul>
       </li>
     </ul>
