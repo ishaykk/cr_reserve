@@ -62,33 +62,27 @@
 </div>
 <script>
 $(function() {
-    //$('#form').reset();
     const constants = {!! $config !!};
     $('input[type=checkbox]').checked = false;
     $('#start_time').timepicker({
-    timeFormat: 'H:mm',
-    interval: constants.orders.orders_time_interval,
-    minTime: constants.orders.min_start_time,
-    maxTime: constants.orders.max_start_time,
-    dynamic: true,
-    dropdown: true,
-    scrollbar: true
+        timeFormat: 'H:mm',
+        interval: parseInt(constants['orders_time_interval']),
+        minTime: constants['min_start_time'],
+        maxTime: constants['max_start_time'],
+        dynamic: true,
+        dropdown: true,
+        scrollbar: true
     });
-    //console.log(element);
     $('#end_time').timepicker({
-    timeFormat: 'H:mm',
-    interval: constants.orders.orders_time_interval,
-    minTime: constants.orders.min_end_time,
-    maxTime: constants.orders.max_end_time,
-    dynamic: true,
-    dropdown: true,
-    scrollbar: true
+        timeFormat: 'H:mm',
+        interval: parseInt(constants['orders_time_interval']),
+        minTime: constants['min_end_time'],
+        maxTime: constants['max_end_time'],
+        dynamic: true,
+        dropdown: true,
+        scrollbar: true
     });
 });
-// $('#start_time').on('change'(function() {
-//     console.log($(this).val());
-// });
-    //console.log($('#start_time').timepicker().getTime());
 </script>
 @endsection
 

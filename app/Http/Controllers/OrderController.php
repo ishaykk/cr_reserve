@@ -6,6 +6,7 @@ use Auth;
 use App\Room;
 use App\Order;
 use App\User;
+use App\Configuration;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -36,7 +37,7 @@ class OrderController extends Controller
     {
         $cap = Room::where('available', 1)->distinct('capacity')->orderBy('capacity', 'asc')->pluck('capacity');
         $date = Carbon::now('Israel');
-        $config = Config::get('constants');
+        $config = Configuration::where('section', 'orders')->pluck('value', 'key');
         return view('orders.search', compact('cap', 'date', 'config'));
     }
 
@@ -97,7 +98,13 @@ class OrderController extends Controller
         $data['start_time'] = $request->date. ' ' .$request->start_time;
         $data['end_time'] = $request->date. ' ' .$request->end_time;
         $data['status'] = 1;
-        //dd($data);
+
+        $dateS = Carbon::parse($request->start_time);
+        $dateE = Carbon::parse($request->end_time);
+
+        if($dateE->subHours(5) >= $dateS)
+            $data['status'] = 0;
+        
         Order::create($data);
 
         return redirect('orders')->with('success', 'Order created succesfully!');
@@ -147,6 +154,30 @@ class OrderController extends Controller
     {
         $order->delete();
         return redirect()->back()->with('success', 'Order deleted successfully!');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Order  $order
+     * @return \Illuminate\Http\Response
+     */
+    //public function approve(Order $order)
+    //{
+        // $order->delete();
+        // return redirect()->back()->with('success', 'Order deleted successfully!');
+    //}
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Order  $order
+     * @return \Illuminate\Http\Response
+     */
+    public function deny(Order $order)
+    {
+        // $order->delete();
+        // return redirect()->back()->with('success', 'Order deleted successfully!');
     }
 
     /**

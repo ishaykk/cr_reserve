@@ -34,6 +34,7 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="adminDropdownMenuLink">
           <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">User Management</a></li>
+          <li><a class="dropdown-item" href="{{ route('config.edit') }}">Configurations</a></li>
           <li><a class="dropdown-item" href="{{ route('orders.all') }}">All Orders</a></li>
 
           <li class="dropdown-submenu">

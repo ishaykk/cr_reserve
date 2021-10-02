@@ -39,8 +39,10 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/reset', 'HomeController@reset')->name('reset');
     Route::resource('/floordrawings', 'FloorDrawingController'/*, ['except' => ['show, store']]*/);
     Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function() {
-    Route::resource('/users','UsersController', ['except' => ['show', 'create','store',]]);
+        Route::resource('/users','UsersController', ['except' => ['show', 'create','store',]]);
     });
+    Route::get('/config', 'ConfigurationController@edit')->name('config.edit');
+    Route::patch('/config', 'ConfigurationController@update')->name('config.update');
 });
 
 
