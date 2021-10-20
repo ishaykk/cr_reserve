@@ -13,14 +13,4 @@ class Room extends Model
     {
         return $this->hasMany(Order::class, 'order_id');
     }
-
-    public function user() 
-    {
-        return $this->belongsTo(Floor::class);
-    }
-
-    public function floor() 
-    {
-        return $this->belongsTo(Floor::class);
-    }
 }

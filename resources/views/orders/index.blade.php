@@ -1,52 +1,51 @@
 @extends('layout')
 @section('title', 'My Orders')
 @section('content')
-<div class="row mt-1 m-md-5 d-flex justify-content-center">
-    <div class="col-md-12">
-    @if(session()->get('success'))
-        <div class="alert alert-success">{{ session()->get('success') }}</div>
-    @endif
+<div class='col-12'>
+  @if(session()->get('success'))
+  <div class="alert alert-success">{{ session()->get('success') }}</div>
+@endif
+<div class="row">
+    <div class='col-12'>
         <div class="card">
-            <div class="card-header">
-                    <span class="float-left"><h5><strong>Your orders</strong></h5></span>
-                    <span class="float-left ml-2"><a class="btn btn-sm btn-primary" href="{{ url('/orders/search') }}">Create new order</a></span>
-            </div>
-            <div class="card-body table-responsive">
+            <div class="card-header"><strong>Your orders</strong></div>
+            <div class="card-body">
                 <table class="table">
                     <thead>
-                    <tr class="text-center"> 
-                        <th>Date</th>
-                        <th>Start time</th>
-                        <th>End time</th>
+                    <tr>
                         <th>Room id</th>
                         <th>Floor</th>
                         <th>Capacity</th>
-                        <th>Projector?</th>
+                        <th>Projector</th>
+                        <th>Date</th>
+                        <th>Start time</th>
+                        <th>End time</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                         @foreach($orders as $order)
-                            <tr class="text-center">
+                            <tr>
+                                <th>{{ $order->room_id }}</th>
+                                <td>{{ $order->room->floor }}</td>
+                                <td>{{ $order->room->capacity }}</td>
+                                <td>{{ $order->room->projector }}</td>
                                 <td>{{ $order->date->format('d/m/Y') }}</td>
                                 <td>{{ $order->start_time->format('H:i') }}</td>
                                 <td>{{ $order->end_time->format('H:i') }}</td>
-                                <td>{{ $order->room_id }}</td>
-                                <td>{{ $order->room->floor }}</td>
-                                <td>{{ $order->room->capacity }}</td>
-                                <td>{{ ($order->room->projector == 1) ? 'Yes' : 'No' }}</td>
                                 <td> {{ ($order->status == 1) ? 'Active' : (($order->status == 2) ? 'Canceled' : 'Completed') }}</td>
                                 <td>
-                                    @if($order->status == 1)
-                                    <div>
-                                        <form action="{{ route('orders.destroy', $order->order_id) }}" method="post">
+                                    <div class="float-left">
+                                        <a class="btn btn-small btn-info" href="{{ route('orders.edit', $order->order_id) }}">Edit</a>
+                                    </div>
+                                    <div class="float-right">
+                                        <form action="{{ route('rooms.destroy', $order->order_id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-small btn-danger" type="submit">Cancel</button>
+                                        <button class="btn btn-small btn-danger" type="submit">Delete</button>
                                         </form>
                                     </div>
-                                    @endif
                                 </td>
                             </tr>
                         @endforeach
