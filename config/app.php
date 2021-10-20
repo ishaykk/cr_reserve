@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Room Reservations'),
+    'name' => env('APP_NAME', 'Laravel'),
 
     /*
     |--------------------------------------------------------------------------
@@ -67,8 +67,7 @@ return [
     |
     */
 
-    //'timezone' => 'UTC',
-    'timezone'  => 'Asia/Jerusalem',
+    'timezone' => 'UTC',
 
     /*
     |--------------------------------------------------------------------------

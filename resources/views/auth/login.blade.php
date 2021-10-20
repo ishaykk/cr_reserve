@@ -67,17 +67,6 @@
                     </form>
                 </div>
             </div>
-            <div class="card mt-4">
-                <div class="card-header">Default Users</div>
-                <div class="card-body">
-                <ul>Admin Account:
-                <li><strong>Email:</strong> admin@admin.com</li>
-                <li><strong>Password:</strong> admin123</li>
-                </ul>
-                <ul>User Account:
-                <li><strong>Email:</strong> user@user.com</li>
-                <li><strong>Password:</strong> user123</li>
-                </ul>
         </div>
     </div>
 </div>
