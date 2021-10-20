@@ -152,9 +152,6 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        $order->delete();
-        return redirect()->back()->with('success', 'Order deleted successfully!');
-
         $currentDate = Carbon::now('Israel');
         if(Auth::check() && Auth::user()->hasRole('admin'))
             $order->update(['status' => 3, 'updated_at' => $currentDate]);
