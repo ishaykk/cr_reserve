@@ -30,8 +30,8 @@ class HomeController extends Controller
         $dateNowIL = Carbon::now('Israel')->format('Y-m-d');
         $dateIn7Days = Carbon::now('Israel')->addDays(7)->format('Y-m-d');
 
-        $todayOrders = Order::where('user_id', Auth::user()->id)->where('date', $dateNowIL)->get();
-        $next7DaysOrders = Order::where('user_id', Auth::user()->id)->where('date', '>=', $dateNowIL)->where('date', '<=', $dateIn7Days)->get()->sortBy('start_time')->sortBy('date');
+        $todayOrders = Order::where('user_id', Auth::user()->id)->where('status', 1)->where('date', $dateNowIL)->get();
+        $next7DaysOrders = Order::where('user_id', Auth::user()->id)->where('status', 1)->where('date', '>=', $dateNowIL)->where('date', '<=', $dateIn7Days)->get()->sortBy('start_time')->sortBy('date');
 
         //dd($next7DaysOrders);
         return view('home', compact('todayOrders', 'next7DaysOrders'));

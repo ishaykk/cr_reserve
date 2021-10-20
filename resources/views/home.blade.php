@@ -28,7 +28,7 @@
                         <th>Capacity</th>
                         <th>Projector?</th>
                         <th>Status</th>
-                        <th></th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,16 +43,11 @@
                     <td>{{ ($order->room->projector == 1) ? 'Yes' : 'No' }}</td>
                     <td> {{ ($order->status == 1) ? 'Active' : (($order->status == 2) ? 'Canceled' : 'Completed') }}</td>
                     <td>
-                        <!-- <div class="float-left">
-                            <a class="btn btn-small btn-info" href="{{ route('orders.edit', $order->order_id) }}">Edit</a>
-                        </div> -->
-                        <div class="float-right">
-                            <form action="{{ route('orders.destroy', $order->order_id) }}" method="post">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-small btn-danger" type="submit">Cancel</button>
-                            </form>
-                        </div>
+                        <form action="{{ route('orders.destroy', $order->order_id) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-small btn-danger" type="submit">Cancel</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach
@@ -97,16 +92,11 @@
                     <td>{{ ($order->room->projector == 1) ? 'Yes' : 'No' }}</td>
                     <td> {{ ($order->status == 1) ? 'Active' : (($order->status == 2) ? 'Canceled' : 'Completed') }}</td>
                     <td>
-                        <!-- <div class="float-left">
-                            <a class="btn btn-small btn-info" href="{{ route('orders.edit', $order->order_id) }}">Edit</a>
-                        </div> -->
-                        <div class="float-right">
-                            <form action="{{ route('orders.destroy', $order->order_id) }}" method="post">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-small btn-danger" type="submit">Cancel</button>
-                            </form>
-                        </div>
+                        <form action="{{ route('orders.destroy', $order->order_id) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-small btn-danger" type="submit">Cancel</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach

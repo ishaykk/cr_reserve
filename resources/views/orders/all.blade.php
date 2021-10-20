@@ -23,6 +23,7 @@
                         <th>Status</th>
                         <th>Created by</th>
                         <th>Created at</th>
+                        <th>Updated at</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -36,10 +37,12 @@
                                 <td> {{ ($order->status == 1) ? 'Active' : (($order->status == 2) ? 'Canceled' : 'Completed') }}</td>
                                 <td><a href="{{ route('users.show', ['user' => $order->user->id]) }}">{{ $order->user->name }}</a></td>
                                 <td>{{ $order->created_at }}</td>
+                                <td>{{ $order->updated_at }}</td>
                                 <td>
                                     <!-- <div class="float-left">
                                         <a class="btn btn-small btn-info" href="{{ route('orders.edit', $order->order_id) }}">Edit</a>
                                     </div> -->
+                                    @if($order->status == 1)
                                     <div>
                                         <form action="{{ route('orders.destroy', $order->order_id) }}" method="post">
                                         @csrf
@@ -47,6 +50,7 @@
                                         <button class="btn btn-sm btn-danger" type="submit">Cancel</button>
                                         </form>
                                     </div>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

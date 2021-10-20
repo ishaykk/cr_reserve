@@ -24,7 +24,7 @@ class OrderController extends Controller
     public function index()
     {
         //$orders = Order::all()->sortByDesc('date');
-        $orders = Order::where('user_id', Auth::id())->get()->sortByDesc('date');
+        $orders = Order::where('user_id', Auth::id())->get()->sortByDesc('updated_at')->sortByDesc('date');
         return view('orders.index', compact('orders'));
     }
 
@@ -69,7 +69,7 @@ class OrderController extends Controller
         $dataArray['date_il'] = Carbon::createFromFormat('Y-m-d', $date)->format('d/m/Y');
         //dd($sDateTime, $eDateTime);
         $rooms = Room::where('capacity', '>=', $cap)->where('available', 1)->where('projector', '>=', $proj)->whereNotIn('room_id', function($query) use ($date, $eDateTime, $sDateTime) {
-            $query->setBindings([$date, $eDateTime, $sDateTime])->select('room_id')->from('orders')->whereRaw('date = ?')->whereRaw('(TIMEDIFF(start_time, ?) < 0 AND TIMEDIFF(end_time, ?) > 0)');
+            $query->setBindings([$date, $eDateTime, $sDateTime])->select('room_id')->from('orders')->whereRaw('date = ?')->whereRaw('status != 2')->whereRaw('(TIMEDIFF(start_time, ?) < 0 AND TIMEDIFF(end_time, ?) > 0)');
         })->get();
         
         if ($rooms->isEmpty())
@@ -152,8 +152,13 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        $order->delete();
-        return redirect()->back()->with('success', 'Order deleted successfully!');
+        $currentDate = Carbon::now('Israel');
+        $order->update(['status' => 2, 'updated_at' => $currentDate]);
+        if($order) 
+        {
+            return redirect()->back()->with('success', 'Order has been canceled successfully!');
+        }
+        return redirect()->back()->with('errors', "Error! Couldn't cancel your order");
     }
 
     /**
@@ -187,7 +192,7 @@ class OrderController extends Controller
      */
     public function getAllOrders()
     {
-        $orders = Order::all()->sortByDesc('date');
+        $orders = Order::all()->sortByDesc('date')->sortByDesc('updated_at')->sortByDesc('date');
         return view('orders.all', compact('orders'));
     }
 
