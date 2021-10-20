@@ -25,7 +25,7 @@ class OrdersTableSeeder extends Seeder
         Order::create(['user_id' => $admin, 'room_id' => 505, 'date' => $today, 'start_time' => '07:15:00', 'end_time' => '12:00:00', 'status' => 1]);
         Order::create(['user_id' => $admin, 'room_id' => 506, 'date' => $yesterday, 'start_time' => '08:00:00', 'end_time' => '09:15:00', 'status' => 1]);
         Order::create(['user_id' => $admin, 'room_id' => 507, 'date' => $twoDaysAgo, 'start_time' => '07:00:00', 'end_time' => '07:15:00', 'status' => 1]);
-        Order::create(['user_id' => $admin, 'room_id' => 508, 'date' => $tomorrow, 'start_time' => '13:45:00', 'end_time' => '17:00:00', 'status' => 1]);
+        Order::create(['user_id' => $admin, 'room_id' => 505, 'date' => $tomorrow, 'start_time' => '12:45:00', 'end_time' => '16:30:00', 'status' => 1]);
         
         Order::create(['user_id' => $user, 'room_id' => 506, 'date' => $today, 'start_time' => '11:15:00', 'end_time' => '12:15:00', 'status' => 1]);
         Order::create(['user_id' => $user, 'room_id' => 506, 'date' => $yesterday, 'start_time' => '10:00:00', 'end_time' => '14:15:00', 'status' => 1]);

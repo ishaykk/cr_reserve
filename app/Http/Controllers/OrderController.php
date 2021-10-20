@@ -69,7 +69,7 @@ class OrderController extends Controller
         $dataArray['date_il'] = Carbon::createFromFormat('Y-m-d', $date)->format('d/m/Y');
         //dd($sDateTime, $eDateTime);
         $rooms = Room::where('capacity', '>=', $cap)->where('available', 1)->where('projector', '>=', $proj)->whereNotIn('room_id', function($query) use ($date, $eDateTime, $sDateTime) {
-            $query->setBindings([$date, $eDateTime, $sDateTime])->select('room_id')->from('orders')->whereRaw('date = ?')->whereRaw('status != 2')->whereRaw('(TIMEDIFF(start_time, ?) < 0 AND TIMEDIFF(end_time, ?) > 0)');
+            $query->setBindings([$date, $eDateTime, $sDateTime])->select('room_id')->from('orders')->whereRaw('date = ?')->whereRaw('status = 1')->whereRaw('(TIMEDIFF(start_time, ?) < 0 AND TIMEDIFF(end_time, ?) > 0)');
         })->get();
         
         if ($rooms->isEmpty())
