@@ -47,7 +47,7 @@ class OrderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
-        {
+    {
         //dd($request);
         $cap = intval($request->capacity);
         $request->capacity = $cap;
@@ -152,20 +152,14 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-<<<<<<< HEAD
-<<<<<<< Updated upstream
         $order->delete();
         return redirect()->back()->with('success', 'Order deleted successfully!');
-=======
+
         $currentDate = Carbon::now('Israel');
         if(Auth::check() && Auth::user()->hasRole('admin'))
             $order->update(['status' => 3, 'updated_at' => $currentDate]);
         else
             $order->update(['status' => 2, 'updated_at' => $currentDate]);
-=======
-        $currentDate = Carbon::now('Israel');
-        $order->update(['status' => 2, 'updated_at' => $currentDate]);
->>>>>>> 9f544e17b02b27f691f8b1f8c5d4f61d414132e2
         if($order) 
         {
             return redirect()->back()->with('success', 'Order has been canceled successfully!');
@@ -195,10 +189,6 @@ class OrderController extends Controller
     {
         // $order->delete();
         // return redirect()->back()->with('success', 'Order deleted successfully!');
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> 9f544e17b02b27f691f8b1f8c5d4f61d414132e2
     }
 
     /**
