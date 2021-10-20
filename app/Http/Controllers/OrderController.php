@@ -144,8 +144,45 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
+<<<<<<< Updated upstream
         $order->delete();
         return redirect()->back()->with('success', 'Order deleted successfully!');
+=======
+        $currentDate = Carbon::now('Israel');
+        if(Auth::check() && Auth::user()->hasRole('admin'))
+            $order->update(['status' => 3, 'updated_at' => $currentDate]);
+        else
+            $order->update(['status' => 2, 'updated_at' => $currentDate]);
+        if($order) 
+        {
+            return redirect()->back()->with('success', 'Order has been canceled successfully!');
+        }
+        return redirect()->back()->with('errors', "Error! Couldn't cancel your order");
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Order  $order
+     * @return \Illuminate\Http\Response
+     */
+    //public function approve(Order $order)
+    //{
+        // $order->delete();
+        // return redirect()->back()->with('success', 'Order deleted successfully!');
+    //}
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Order  $order
+     * @return \Illuminate\Http\Response
+     */
+    public function deny(Order $order)
+    {
+        // $order->delete();
+        // return redirect()->back()->with('success', 'Order deleted successfully!');
+>>>>>>> Stashed changes
     }
 
     /**

@@ -33,7 +33,7 @@
                                 <td>{{ $order->start_time->format('H:i') }}</td>
                                 <td>{{ $order->end_time->format('H:i') }}</td>
                                 <td><a href="{{ route('rooms.show', ['room' => $order->room->room_id]) }}">{{ $order->room_id }}</a></td>
-                                <td> {{ ($order->status == 1) ? 'Active' : (($order->status == 2) ? 'Canceled' : 'Completed') }}</td>
+                                <td> {{ ($order->status == 1) ? 'Active' : (($order->status == 2) ? 'Canceled by user' : 'Canceled by admin') }}</td>
                                 <td><a href="{{ route('users.show', ['user' => $order->user->id]) }}">{{ $order->user->name }}</a></td>
                                 <td>{{ $order->created_at }}</td>
                                 <td>

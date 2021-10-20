@@ -37,7 +37,7 @@
                                 <td>{{ $order->room->floor }}</td>
                                 <td>{{ $order->room->capacity }}</td>
                                 <td>{{ ($order->room->projector == 1) ? 'Yes' : 'No' }}</td>
-                                <td> {{ ($order->status == 1) ? 'Active' : (($order->status == 2) ? 'Canceled' : 'Completed') }}</td>
+                                <td> {{ ($order->status == 1) ? 'Active' : (($order->status == 2) ? 'Canceled' : 'Canceled by Admin') }}</td>
                                 <td>
                                     <!-- <div class="float-left">
                                         <a class="btn btn-small btn-info" href="{{ route('orders.edit', $order->order_id) }}">Edit</a>
