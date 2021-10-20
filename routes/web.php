@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,27 +14,54 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
+
+Route::resource('/users', 'UserController');
+
+Route::get('floors/map', 'FloorController@showMap')->name('floors.map');
+
+Route::get('/', 'HomeController@index')->name('home');
+
+Route::post('floordrawings/getDrawing/', 'FloorDrawingController@getDrawing');
+Route::get('/orders/stats/', 'OrderController@getOrdersStats')->name('orders.stats');
+
+Route::get('/orders', 'OrderController@index')->name('orders.index');
+Route::get('/orders/search', 'OrderController@search')->name('orders.search');
+Route::post('/orders/create', 'OrderController@create')->name('orders.create');
+Route::post('/orders', 'OrderController@store');
+Route::get('/orders/{order}/edit', 'OrderController@edit')->name('orders.edit');
+Route::delete('/orders/{order}', 'OrderController@destroy')->name('orders.destroy');
+
+Route::group(['middleware' => 'admin'], function () {
+    Route::get('orders/all', 'OrderController@getAllOrders')->name('orders.all');
+    Route::resource('/floors', 'FloorController');
+    Route::resource('/rooms', 'RoomController');
+    Route::get('/reset', 'HomeController@reset')->name('reset');
+    Route::resource('/floordrawings', 'FloorDrawingController'/*, ['except' => ['show, store']]*/);
+    Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function() {
+        Route::resource('/users','UsersController', ['except' => ['show', 'create','store',]]);
+    });
+    Route::get('/config', 'ConfigurationController@edit')->name('config.edit');
+    Route::patch('/config', 'ConfigurationController@update')->name('config.update');
+});
+
+
+
+
+
+
+
+// Route::get('/users/{id}', 'UserController@show')->name('users.show');
+// Route::get('/users/edit', 'UserController@edit')->name('users.edit');
+// Route::post('/users/edit', 'UserController@update')->name('users.update');
+
+// Route::get('/rooms/{room}/edit', 'RoomController@edit')->name('rooms.edit');
+// Route::patch('/rooms/{room}', 'RoomController@update')->name('rooms.update');
+//Route::resource('orders', 'OrderController');
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-
-Auth::routes();
-
-Route::get('/', 'HomeController@index')->name('home');
-Route::get('map', function () {
-    return view('map');
-});
-// Route::get('/rooms', 'RoomController@index');
-// Route::get('/rooms/create', 'RoomController@create');
-// Route::post('/rooms', 'RoomController@store');
-// Route::get('/rooms/{room}/edit', 'RoomController@edit')->name('rooms.edit');
-// Route::patch('/rooms/{room}', 'RoomController@update')->name('rooms.update');
-// Route::delete('/rooms/{room}', 'RoomController@destroy')->name('rooms.destroy');
-Route::get('/orders/search', 'OrderController@search')->name('orders.search');
-Route::resource('rooms', 'RoomController');
-Route::resource('orders', 'OrderController');
-
-
 
 // Route::get('/test', function () {
 //     $arr = [['fname' => 'Nadav', 'lname' => 'Rosen', 'email' => 'nadav@test.com'],

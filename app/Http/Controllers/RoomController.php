@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use App\Room;
+use App\Floor;
+use Exception;
 
 class RoomController extends Controller
 {
@@ -17,20 +21,25 @@ class RoomController extends Controller
     {
         $rooms = Room::all();
         return view('rooms.index', compact('rooms'));
-
     }
 
+
+    public function show($id)
+    {
+        $room = Room::findOrFail($id);
+        if ($room)
+            return view('rooms.show', compact('room'));
+        else 
+            return redirect()->back();
+    }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $floors = [1,2,3,4];
-        $cap = [4, 6, 8, 10, 12, 14];
-        $bool = [1,0];
-        return view('rooms.create', compact('floors', 'cap', 'bool'));
-
+        $floors = Floor::all();
+        return view('rooms.create', compact('floors'));
     }
 
     /**
@@ -41,19 +50,17 @@ class RoomController extends Controller
     public function store(Request $request) 
     {
         $data = request()->validate([
-            'room_id' => 'required|digits:3',
-            'floor' => 'required',
-            'capacity' => 'required',
+            'room_id' => 'required|unique:rooms|numeric|digits:3',
+            'floor' => 'required|numeric|min:0',
+            'capacity' => 'required|numeric|min:1'
         ]);
+
         $data['occupied'] = 0;
         $data['available'] = 1;
-        if($request->has('projector'))
-            $data['projector'] = 1;
-        else
-            $data['projector'] = 0;
-        //dd($data);
-        Room::create($data);
-
+        $data['projector'] = ($request->has('projector')) ? 1 : 0;
+        $data['available'] = ($request->has('available')) ? 1 : 0;
+        
+        $room = Room::firstOrCreate($data);
         return redirect('rooms')->with('success', 'Room added!');
     }
 
@@ -65,42 +72,38 @@ class RoomController extends Controller
      */ 
     public function edit($id)
     {
-
-        $floors = [1,2,3,4];
-        $cap = [4, 6, 8, 10, 12, 14];
-        $bool = [1,0];
+        $floors = Floor::all();
         $room = Room::findOrFail($id);
-        //dd($room);
-
-        return view('rooms.edit', compact('room', 'floors', 'cap', 'bool'));
-
+        return view('rooms.edit', compact('room', 'floors'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $room
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Room $room)
     {   
-        $data = request()->validate([
-            'room_id' => 'required|digits:3',
-            'floor' => 'required',
-            'capacity' => 'required',
+        //dd($request->all());
+        $validatedData = $request->validate([
+            'room_id' => [
+                'required',
+                'min:3',
+                'gt:0',
+                Rule::unique('rooms')->ignore($room),
+            ],
+            'floor' => ['required', 'numeric', 'gt:-1',],
+            'capacity' => ['required', 'numeric', 'gt:0',]
+            
         ]);
-        $data['occupied'] = 0;
-        $data['available'] = 1;
-        if($request->has('projector'))
-            $data['projector'] = 1;
-        else
-            $data['projector'] = 0;
         
-        //dd($data);
-        Room::findOrFail($id)->update($data);
-
-        return redirect('rooms')->with('success', 'Room updated!');
+        $validatedData['projector'] = ($request->has('projector')) ? 1 : 0;
+        $validatedData['available'] = ($request->has('available')) ? 1 : 0;
+        //dd($validatedData);
+        Room::findOrFail($room->room_id)->update($validatedData);
+        return redirect('rooms')->with('success', 'Room has been updated!');
     }
 
     /**
@@ -111,11 +114,9 @@ class RoomController extends Controller
      */
     public function destroy($id)
     {
-        //dd($id);
+        //dd($id);,
         $room = Room::find($id);
         $room->delete();
-        
-
         return redirect('rooms')->with('success', 'Room '. $id . ' deleted!');
     }
 
