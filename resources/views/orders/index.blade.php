@@ -7,7 +7,6 @@
         <div class="alert alert-success">{{ session()->get('success') }}</div>
     @endif
         <div class="card">
-            <!-- <div class="card-header"><strong>Your orders</strong></div> -->
             <div class="card-header">
                     <span class="float-left"><h5><strong>Your orders</strong></h5></span>
                     <span class="float-left ml-2"><a class="btn btn-sm btn-primary" href="{{ url('/orders/search') }}">Create new order</a></span>
@@ -39,9 +38,7 @@
                                 <td>{{ ($order->room->projector == 1) ? 'Yes' : 'No' }}</td>
                                 <td> {{ ($order->status == 1) ? 'Active' : (($order->status == 2) ? 'Canceled' : 'Canceled by Admin') }}</td>
                                 <td>
-                                    <!-- <div class="float-left">
-                                        <a class="btn btn-small btn-info" href="{{ route('orders.edit', $order->order_id) }}">Edit</a>
-                                    </div> -->
+                                    @if($order->status == 1)
                                     <div>
                                         <form action="{{ route('orders.destroy', $order->order_id) }}" method="post">
                                         @csrf
@@ -49,6 +46,7 @@
                                         <button class="btn btn-small btn-danger" type="submit">Cancel</button>
                                         </form>
                                     </div>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

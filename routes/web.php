@@ -23,6 +23,7 @@ Route::get('floors/map', 'FloorController@showMap')->name('floors.map');
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::post('floordrawings/getDrawing/', 'FloorDrawingController@getDrawing');
+Route::get('/orders/stats/', 'OrderController@getOrdersStats')->name('orders.stats');
 
 Route::get('/orders', 'OrderController@index')->name('orders.index');
 Route::get('/orders/search', 'OrderController@search')->name('orders.search');
@@ -38,8 +39,10 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/reset', 'HomeController@reset')->name('reset');
     Route::resource('/floordrawings', 'FloorDrawingController'/*, ['except' => ['show, store']]*/);
     Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function() {
-    Route::resource('/users','UsersController', ['except' => ['show', 'create','store',]]);
+        Route::resource('/users','UsersController', ['except' => ['show', 'create','store',]]);
     });
+    Route::get('/config', 'ConfigurationController@edit')->name('config.edit');
+    Route::patch('/config', 'ConfigurationController@update')->name('config.update');
 });
 
 

@@ -16,6 +16,7 @@ class OrdersTableSeeder extends Seeder
     {
         Order::truncate();
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
         $today = Carbon::now('Israel')->format('Y-m-d');
         $tomorrow = Carbon::now('Israel')->addDays(1)->format('Y-m-d');
@@ -26,10 +27,16 @@ class OrdersTableSeeder extends Seeder
         $yesterday = Carbon::now('Israel')->subDays(1)->format('Y-m-d');
         $twoDaysAgo = Carbon::now('Israel')->subDays(2)->format('Y-m-d');
 >>>>>>> Stashed changes
+=======
+        $today = Carbon::now('Israel')->toDateTimeString();
+        $yesterday = Carbon::now('Israel')->subDays(1)->format('Y-m-d');
+        $twoDaysAgo = Carbon::now('Israel')->subDays(2)->format('Y-m-d');
+>>>>>>> 9f544e17b02b27f691f8b1f8c5d4f61d414132e2
         $admin = User::first()->id;
         $user = User::skip(2)->first()->id;
 
         Order::create(['user_id' => $admin, 'room_id' => 505, 'date' => $today, 'start_time' => '07:00:00', 'end_time' => '07:15:00', 'status' => 1]);
+<<<<<<< HEAD
 <<<<<<< Updated upstream
         Order::create(['user_id' => $admin, 'room_id' => 506, 'date' => $tomorrow, 'start_time' => '08:00:00', 'end_time' => '09:15:00', 'status' => 1]);
         Order::create(['user_id' => $admin, 'room_id' => 507, 'date' => $dayAfterTomorrow, 'start_time' => '07:00:00', 'end_time' => '07:15:00', 'status' => 1]);
@@ -43,12 +50,22 @@ class OrdersTableSeeder extends Seeder
         Order::create(['user_id' => $admin, 'room_id' => 507, 'date' => $twoDaysAgo, 'start_time' => '07:00:00', 'end_time' => '07:15:00', 'status' => 1]);
         Order::create(['user_id' => $user, 'room_id' => 508, 'date' => $tomorrow, 'start_time' => '13:45:00', 'end_time' => '17:00:00', 'status' => 1]);
         
+=======
+        Order::create(['user_id' => $admin, 'room_id' => 505, 'date' => $today, 'start_time' => '07:15:00', 'end_time' => '12:00:00', 'status' => 1]);
+        Order::create(['user_id' => $admin, 'room_id' => 506, 'date' => $yesterday, 'start_time' => '08:00:00', 'end_time' => '09:15:00', 'status' => 1]);
+        Order::create(['user_id' => $admin, 'room_id' => 507, 'date' => $twoDaysAgo, 'start_time' => '07:00:00', 'end_time' => '07:15:00', 'status' => 1]);
+        
+>>>>>>> 9f544e17b02b27f691f8b1f8c5d4f61d414132e2
         Order::create(['user_id' => $user, 'room_id' => 505, 'date' => $today, 'start_time' => '13:15:00', 'end_time' => '19:00:00', 'status' => 1]);
         Order::create(['user_id' => $user, 'room_id' => 506, 'date' => $today, 'start_time' => '11:15:00', 'end_time' => '12:15:00', 'status' => 1]);
         Order::create(['user_id' => $user, 'room_id' => 506, 'date' => $yesterday, 'start_time' => '10:00:00', 'end_time' => '14:15:00', 'status' => 1]);
         Order::create(['user_id' => $user, 'room_id' => 507, 'date' => $twoDaysAgo, 'start_time' => '16:00:00', 'end_time' => '16:15:00', 'status' => 1]);
         Order::create(['user_id' => $user, 'room_id' => 507, 'date' => $today, 'start_time' => '11:00:00', 'end_time' => '12:00:00', 'status' => 1]);
+<<<<<<< HEAD
         Order::create(['user_id' => $admin, 'room_id' => 505, 'date' => $tomorrow, 'start_time' => '11:15:00', 'end_time' => '12:00:00', 'status' => 1]);
 >>>>>>> Stashed changes
+=======
+
+>>>>>>> 9f544e17b02b27f691f8b1f8c5d4f61d414132e2
     }
 }
